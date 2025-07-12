@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -19,8 +20,8 @@ public class Ngay {
     @Column(name = "Ngay_Id", nullable = false)
     private Integer id;
 
-    @Column(name = "Ngay_DayDU")
-    private Instant ngayDaydu;
+    @Column(name = "Ngay_DayDU", unique = true, nullable = false)
+    private LocalDate ngayDaydu;
 
     @NotNull
     @Column(name = "Ngay_TrongTuan", nullable = false)
@@ -42,5 +43,25 @@ public class Ngay {
 
     @OneToMany(mappedBy = "ngay", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<KhoanThu> khoanThus = new LinkedHashSet<>();
+
+    @PrePersist
+    public void prePersist() {
+        if (ngayDaydu == null) {
+            ngayDaydu = LocalDate.now();
+        }
+        // Tự động tính toán các trường từ ngayDaydu
+        ngayTrongtuan = ngayDaydu.getDayOfWeek().getValue();
+        ngayTrongthang = ngayDaydu.getDayOfMonth();
+        ngayTrongnam = ngayDaydu.getDayOfYear();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        if (ngayDaydu != null) {
+            ngayTrongtuan = ngayDaydu.getDayOfWeek().getValue();
+            ngayTrongthang = ngayDaydu.getDayOfMonth();
+            ngayTrongnam = ngayDaydu.getDayOfYear();
+        }
+    }
 
 }

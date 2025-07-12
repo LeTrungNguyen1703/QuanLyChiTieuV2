@@ -24,7 +24,9 @@ public class ChucNang {
     @Column(name = "CN_TEN", nullable = false, length = 256)
     private String cnTen;
 
-    @OneToMany(cascade = {
+    @OneToMany(
+            mappedBy = "chucNang",
+            cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE,
             CascadeType.REFRESH,

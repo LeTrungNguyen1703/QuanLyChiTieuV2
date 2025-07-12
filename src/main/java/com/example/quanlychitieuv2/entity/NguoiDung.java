@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -39,9 +41,8 @@ public class NguoiDung {
     @Column(name = "ND_MatKhau", nullable = false)
     private String ndMatkhau;
 
-    @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "ND_NgayTao")
-    private Instant ndNgaytao;
+    private LocalDate ndNgaytao;
 
     @Size(max = 50)
     @NotNull
@@ -60,4 +61,11 @@ public class NguoiDung {
 
     @OneToMany(mappedBy = "nd", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<SoHu> soHus = new LinkedHashSet<>();
+
+    @PrePersist
+    public void prePersist() {
+        if (ndNgaytao == null) {
+            ndNgaytao = LocalDate.now();
+        }
+    }
 }
