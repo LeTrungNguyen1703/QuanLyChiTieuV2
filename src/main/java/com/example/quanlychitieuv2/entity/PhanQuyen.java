@@ -24,10 +24,6 @@ public class PhanQuyen {
     @Column(name = "PQ_Ten", nullable = false, length = 256)
     private String pqTen;
 
-    @NotNull
-    @Column(name = "PQ_CapDo", nullable = false)
-    private Integer pqCapdo;
-
     @OneToMany(mappedBy = "pq", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<NguoiDung> nguoiDungs = new LinkedHashSet<>();
 

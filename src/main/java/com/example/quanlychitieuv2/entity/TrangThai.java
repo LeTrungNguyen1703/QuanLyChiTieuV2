@@ -35,4 +35,6 @@ public class TrangThai {
     @OneToMany(mappedBy = "tt", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<ViTien> viTiens = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "tt", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private Set<NguoiDung> nguoiDungs = new LinkedHashSet<>();
 }

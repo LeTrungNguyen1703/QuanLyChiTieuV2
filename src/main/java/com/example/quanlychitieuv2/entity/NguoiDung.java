@@ -44,15 +44,6 @@ public class NguoiDung {
     @Column(name = "ND_NgayTao")
     private LocalDate ndNgaytao;
 
-    @Size(max = 50)
-    @NotNull
-    @Column(name = "ND_TrangThai", nullable = false, length = 50)
-    private String ndTrangthai;
-
-    @Size(max = 10)
-    @Column(name = "ND_Avatar", length = 10)
-    private String ndAvatar;
-
     @OneToMany(mappedBy = "nd", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<KhoanChi> khoanChis = new LinkedHashSet<>();
 
@@ -61,6 +52,10 @@ public class NguoiDung {
 
     @OneToMany(mappedBy = "nd", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<SoHu> soHus = new LinkedHashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "tt_id", nullable = false)
+    private TrangThai tt;
 
     @PrePersist
     public void prePersist() {
