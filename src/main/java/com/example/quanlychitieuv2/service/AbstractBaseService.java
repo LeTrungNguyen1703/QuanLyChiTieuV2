@@ -41,7 +41,9 @@ public abstract class AbstractBaseService<Req, Res, E, ID> implements BaseServic
     }
 
     public void update(ID id, Req req) {
-        E entity = getMapper().toEntity(req);
+        E entity = jpaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Entity not found with id " + id));
+        entity = getMapper().updateEntity(req, entity);
         jpaRepository.save(entity);
     }
 

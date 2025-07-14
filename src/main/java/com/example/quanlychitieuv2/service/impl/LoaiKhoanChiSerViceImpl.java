@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 public class LoaiKhoanChiSerViceImpl extends AbstractBaseService<LoaiKhoanChiDto, LoaiKhoanChiResponse, LoaiKhoanChi, Integer> {
 
     LoaiKhoanChiMapper loaiKhoanChiMapper;
-    LoaiKhoanChiRepository loaiKhoanChiRepository;
 
     public LoaiKhoanChiSerViceImpl(LoaiKhoanChiRepository loaiKhoanChiRepository,LoaiKhoanChiMapper loaiKhoanChiMapper) {
         super(loaiKhoanChiRepository);

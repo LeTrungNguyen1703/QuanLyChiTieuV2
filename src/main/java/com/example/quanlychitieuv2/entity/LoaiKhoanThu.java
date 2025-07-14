@@ -16,6 +16,7 @@ import java.util.Set;
 public class LoaiKhoanThu {
     @Id
     @Column(name = "LKT_Id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 256)

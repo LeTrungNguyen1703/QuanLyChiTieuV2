@@ -1,8 +1,10 @@
 package com.example.quanlychitieuv2.mapper;
 
+import org.mapstruct.MappingTarget;
+
 public interface BaseMapper <Req, Res, E> {
 
     E toEntity(Req req);
     Res toRes(E entity);
-    void updateEntity(Req req,Res res);
+    E updateEntity(Req req,@MappingTarget E entity);
 }

@@ -41,4 +41,11 @@ public class KhoanThu {
     @Column(name = "KT_SoTien", nullable = false, precision = 10, scale = 2)
     private BigDecimal ktSotien;
 
+    @NotNull
+    @Column(name = "KT_DaTinh", nullable = false, precision = 10, scale = 2)
+    private Boolean ktDaTinh;
+
+    public KhoanThu() {
+        this.ktDaTinh = false;
+    }
 }
