@@ -1,5 +1,6 @@
 package com.example.quanlychitieuv2.entity;
 
+import com.example.quanlychitieuv2.enums.TrangThaiHoatDong;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -37,4 +38,8 @@ public class TrangThai {
 
     @OneToMany(mappedBy = "tt", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<NguoiDung> nguoiDungs = new LinkedHashSet<>();
+
+    public TrangThai() {
+        this.ttTen = TrangThaiHoatDong.BAT.getValue();
+    }
 }

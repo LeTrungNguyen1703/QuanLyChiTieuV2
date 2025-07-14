@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ViTienDto implements Serializable {
-    private Integer lvId;
-    private Integer ttId;
-    private BigDecimal vtSodu;
+
+    private String
 }

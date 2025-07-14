@@ -1,5 +1,6 @@
 package com.example.quanlychitieuv2.entity;
 
+import com.example.quanlychitieuv2.enums.TrangThaiHoatDong;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -19,6 +20,9 @@ public class ViTien {
     @Column(name = "VT_Id", nullable = false)
     private Integer id;
 
+    @Column(name = "VT_Ten", nullable = false)
+    private String tenVi;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "LV_Id", nullable = false)
@@ -31,7 +35,7 @@ public class ViTien {
 
     @NotNull
     @Column(name = "VT_SoDu", nullable = false, precision = 10, scale = 2)
-    private BigDecimal vtSodu;
+    private Double vtSodu;
 
     @OneToMany(mappedBy = "vt", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<HanMucChi> hanMucChis = new LinkedHashSet<>();
@@ -44,4 +48,9 @@ public class ViTien {
 
     @OneToMany(mappedBy = "vt", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<SoHu> soHus = new LinkedHashSet<>();
+
+    public ViTien () {
+        this.vtSodu = 0.;
+        this.tt = new TrangThai();
+    }
 }
