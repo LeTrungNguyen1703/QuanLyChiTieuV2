@@ -1,0 +1,130 @@
+{
+  "info": {
+    "_postman_id": "d7a3e1f5-6b8c-4e9a-8d7f-a5c9b3e12d67",
+    "name": "PhuongThucThanhToan API",
+    "description": "API Collection cho Phương Thức Thanh Toán",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create PhuongThucThanhToan",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/pttt",
+          "host": ["{{base_url}}"],
+          "path": ["pttt"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tenPhuongThuc\": \"Tiền mặt\"\n}"
+        },
+        "description": "Tạo mới phương thức thanh toán"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All PhuongThucThanhToan",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/pttt",
+          "host": ["{{base_url}}"],
+          "path": ["pttt"]
+        },
+        "description": "Lấy danh sách tất cả phương thức thanh toán"
+      },
+      "response": []
+    },
+    {
+      "name": "Get PhuongThucThanhToan By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/pttt/get-by-id/1",
+          "host": ["{{base_url}}"],
+          "path": [
+            "pttt",
+            "get-by-id",
+            "1"
+          ]
+        },
+        "description": "Lấy phương thức thanh toán theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Update PhuongThucThanhToan",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/pttt/1",
+          "host": ["{{base_url}}"],
+          "path": ["pttt", "1"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"tenPhuongThuc\": \"Thẻ tín dụng\"\n}"
+        },
+        "description": "Cập nhật phương thức thanh toán theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete PhuongThucThanhToan",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/pttt/1",
+          "host": ["{{base_url}}"],
+          "path": ["pttt", "1"]
+        },
+        "description": "Xóa phương thức thanh toán theo ID"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
+

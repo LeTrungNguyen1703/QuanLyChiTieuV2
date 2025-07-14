@@ -17,7 +17,6 @@ public abstract class AbstractBaseController<Req, Res, E, ID> implements BaseCon
     @PostMapping
     public ResponseEntity<ApiResponseSuccess<Res>> create(@RequestBody Req req) {
         Res response = abstractService().create(req);
-        log.info("<UNK> <UNK> <UNK> <UNK> <UNK> <UNK> : {}", response);
         return ResponseEntity.ok(new ApiResponseSuccess<>(response));
     }
 
