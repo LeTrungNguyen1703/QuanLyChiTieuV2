@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhanQuyenRequest {
+public class ChucNangRequest {
 
     @Size(max = 256)
     @NotNull
-    private String pqTen;
+    private String cnTen;
 }

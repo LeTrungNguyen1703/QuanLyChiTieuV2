@@ -1,0 +1,130 @@
+{
+  "info": {
+    "_postman_id": "e5c37f9d-1b2a-4e91-87d3-89f5e3b45a91",
+    "name": "ChucNang API",
+    "description": "API Collection cho Chức Năng",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create ChucNang",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/chuc-nang",
+          "host": ["{{base_url}}"],
+          "path": ["chuc-nang"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"cnTen\": \"Quản lý người dùng\"\n}"
+        },
+        "description": "Tạo mới chức năng"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All ChucNang",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/chuc-nang",
+          "host": ["{{base_url}}"],
+          "path": ["chuc-nang"]
+        },
+        "description": "Lấy danh sách tất cả chức năng"
+      },
+      "response": []
+    },
+    {
+      "name": "Get ChucNang By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/chuc-nang/get-by-id/1",
+          "host": ["{{base_url}}"],
+          "path": [
+            "chuc-nang",
+            "get-by-id",
+            "1"
+          ]
+        },
+        "description": "Lấy chức năng theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Update ChucNang",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/chuc-nang/1",
+          "host": ["{{base_url}}"],
+          "path": ["chuc-nang", "1"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"cnTen\": \"Quản lý quyền\"\n}"
+        },
+        "description": "Cập nhật chức năng theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete ChucNang",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/chuc-nang/1",
+          "host": ["{{base_url}}"],
+          "path": ["chuc-nang", "1"]
+        },
+        "description": "Xóa chức năng theo ID"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
+

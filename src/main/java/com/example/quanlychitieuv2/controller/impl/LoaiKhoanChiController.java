@@ -8,6 +8,9 @@ import com.example.quanlychitieuv2.service.AbstractBaseService;
 import com.example.quanlychitieuv2.service.impl.LoaiKhoanChiSerViceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,13 +18,11 @@ import org.springframework.web.servlet.mvc.AbstractController;
 
 @RestController
 @RequestMapping("/loai-khoan-chi")
-public class LoaiKhoanChiController extends AbstractBaseController<LoaiKhoanChiDto, LoaiKhoanChiResponse, LoaiKhoanChi,Integer> {
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class LoaiKhoanChiController extends AbstractBaseController<LoaiKhoanChiDto, LoaiKhoanChiResponse, LoaiKhoanChi, Integer> {
 
-    private final LoaiKhoanChiSerViceImpl loaiKhoanChiSerViceImpl;
-
-    public LoaiKhoanChiController(LoaiKhoanChiSerViceImpl loaiKhoanChiSerVice) {
-        this.loaiKhoanChiSerViceImpl = loaiKhoanChiSerVice;
-    }
+    LoaiKhoanChiSerViceImpl loaiKhoanChiSerViceImpl;
 
     @Override
     protected AbstractBaseService<LoaiKhoanChiDto, LoaiKhoanChiResponse, LoaiKhoanChi, Integer> abstractService() {

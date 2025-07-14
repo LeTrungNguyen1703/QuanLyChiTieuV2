@@ -1,0 +1,130 @@
+{
+  "info": {
+    "_postman_id": "c8f14e27-5a31-42b9-9d68-7f29e0fa3c12",
+    "name": "PhanQuyen API",
+    "description": "API Collection cho Phân Quyền",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create PhanQuyen",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/phan-quyen",
+          "host": ["{{base_url}}"],
+          "path": ["phan-quyen"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pqTen\": \"ADMIN\"\n}"
+        },
+        "description": "Tạo mới phân quyền"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All PhanQuyen",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/phan-quyen",
+          "host": ["{{base_url}}"],
+          "path": ["phan-quyen"]
+        },
+        "description": "Lấy danh sách tất cả phân quyền"
+      },
+      "response": []
+    },
+    {
+      "name": "Get PhanQuyen By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/phan-quyen/get-by-id/1",
+          "host": ["{{base_url}}"],
+          "path": [
+            "phan-quyen",
+            "get-by-id",
+            "1"
+          ]
+        },
+        "description": "Lấy phân quyền theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Update PhanQuyen",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/phan-quyen/1",
+          "host": ["{{base_url}}"],
+          "path": ["phan-quyen", "1"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pqTen\": \"SUPER_ADMIN\"\n}"
+        },
+        "description": "Cập nhật phân quyền theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete PhanQuyen",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/phan-quyen/1",
+          "host": ["{{base_url}}"],
+          "path": ["phan-quyen", "1"]
+        },
+        "description": "Xóa phân quyền theo ID"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
+

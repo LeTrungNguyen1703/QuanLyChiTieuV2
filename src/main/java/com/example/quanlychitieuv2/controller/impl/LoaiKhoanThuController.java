@@ -7,20 +7,21 @@ import com.example.quanlychitieuv2.entity.LoaiKhoanThu;
 import com.example.quanlychitieuv2.service.AbstractBaseService;
 import com.example.quanlychitieuv2.service.impl.LoaiKhoanChiSerViceImpl;
 import com.example.quanlychitieuv2.service.impl.LoaiKhoanThuServiceImpl;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/loai-khoan-thu")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LoaiKhoanThuController extends AbstractBaseController<LoaiKhoanThuDto, LoaiKhoanThuResponse, LoaiKhoanThu,Integer> {
 
     LoaiKhoanThuServiceImpl loaiKhoanThuServiceImpl;
 
-    @Autowired
-    public LoaiKhoanThuController (LoaiKhoanThuServiceImpl loaiKhoanThuServiceImpl) {
-        this.loaiKhoanThuServiceImpl = loaiKhoanThuServiceImpl;
-    }
 
     @Override
     protected AbstractBaseService<LoaiKhoanThuDto, LoaiKhoanThuResponse, LoaiKhoanThu, Integer> abstractService() {
