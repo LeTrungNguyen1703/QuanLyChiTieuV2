@@ -41,5 +41,6 @@ public class TrangThai {
 
     public TrangThai() {
         this.ttTen = TrangThaiHoatDong.BAT.getValue();
+        this.ttMota = "Đang hoạt động";
     }
 }

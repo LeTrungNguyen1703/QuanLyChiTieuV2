@@ -34,7 +34,7 @@ public class ViTien {
     private TrangThai tt;
 
     @NotNull
-    @Column(name = "VT_SoDu", nullable = false, precision = 10, scale = 2)
+    @Column(name = "VT_SoDu", nullable = false)
     private Double vtSodu;
 
     @OneToMany(mappedBy = "vt", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
@@ -50,7 +50,7 @@ public class ViTien {
     private Set<SoHu> soHus = new LinkedHashSet<>();
 
     public ViTien () {
-        this.vtSodu = 0.;
+        this.vtSodu = 0.0;
         this.tt = new TrangThai();
     }
 }

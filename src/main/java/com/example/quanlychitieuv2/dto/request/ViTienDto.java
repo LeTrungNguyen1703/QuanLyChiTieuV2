@@ -16,4 +16,5 @@ import java.math.BigDecimal;
 public class ViTienDto implements Serializable {
 
     private String tenVi;
+    private Integer lvId;
 }
