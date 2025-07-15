@@ -1,0 +1,130 @@
+{
+  "info": {
+    "_postman_id": "e8c43a2d-15b6-4f9c-a5e7-3c45d9f82e18",
+    "name": "ViTien API",
+    "description": "API Collection cho Ví Tiền",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create ViTien",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/vi-tien",
+          "host": ["{{base_url}}"],
+          "path": ["vi-tien"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"vtTen\": \"Ví cá nhân\",\n  \"vtSodu\": 1000000,\n  \"lvId\": 1,\n  \"ttId\": 1\n}"
+        },
+        "description": "Tạo mới ví tiền"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All ViTien",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/vi-tien",
+          "host": ["{{base_url}}"],
+          "path": ["vi-tien"]
+        },
+        "description": "Lấy danh sách tất cả ví tiền"
+      },
+      "response": []
+    },
+    {
+      "name": "Get ViTien By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/vi-tien/get-by-id/1",
+          "host": ["{{base_url}}"],
+          "path": [
+            "vi-tien",
+            "get-by-id",
+            "1"
+          ]
+        },
+        "description": "Lấy thông tin ví tiền theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Update ViTien",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/vi-tien/1",
+          "host": ["{{base_url}}"],
+          "path": ["vi-tien", "1"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"vtTen\": \"Ví tiết kiệm\",\n  \"vtSodu\": 2000000,\n  \"lvId\": 1,\n  \"ttId\": 1\n}"
+        },
+        "description": "Cập nhật thông tin ví tiền theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete ViTien",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/vi-tien/1",
+          "host": ["{{base_url}}"],
+          "path": ["vi-tien", "1"]
+        },
+        "description": "Xóa ví tiền theo ID"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
+

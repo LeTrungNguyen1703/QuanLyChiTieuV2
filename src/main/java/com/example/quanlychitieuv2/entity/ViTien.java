@@ -51,6 +51,5 @@ public class ViTien {
 
     public ViTien () {
         this.vtSodu = 0.0;
-        this.tt = new TrangThai();
     }
 }

@@ -13,5 +13,6 @@ public interface ViTienMapper extends BaseMapper<ViTienDto, ViTienResponse, ViTi
 
     @Override
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "lv", ignore = true)
     ViTien updateEntity(ViTienDto viTienDto, @MappingTarget ViTien entity);
 }

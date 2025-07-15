@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -39,8 +40,10 @@ public class TrangThai {
     @OneToMany(mappedBy = "tt", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<NguoiDung> nguoiDungs = new LinkedHashSet<>();
 
-    public TrangThai() {
-        this.ttTen = TrangThaiHoatDong.BAT.getValue();
-        this.ttMota = "Đang hoạt động";
+    @PrePersist
+    public void prePersist() {
+        if (this.ttTen == null) {
+            this.ttTen = TrangThaiHoatDong.BAT.getValue();
+        }
     }
 }

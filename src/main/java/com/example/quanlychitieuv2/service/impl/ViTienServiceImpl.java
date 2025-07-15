@@ -20,10 +20,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ViTienServiceImpl extends AbstractBaseService<ViTienDto, ViTienResponse, ViTien,Integer> {
+public class ViTienServiceImpl extends AbstractBaseService<ViTienDto, ViTienResponse, ViTien, Integer> {
     ViTienMapper viTienMapper;
     LoaiViRepository loaiViRepository;
     FindById findById;
@@ -45,23 +46,27 @@ public class ViTienServiceImpl extends AbstractBaseService<ViTienDto, ViTienResp
 
     @Override
     public ViTienResponse create(ViTienDto viTienDto) {
-        TrangThai trangThai = new TrangThai();
         LoaiVi loaiVi = findById.findLoaiViById(viTienDto.getLvId());
+        TrangThai trangThai = new TrangThai();
+
+
         ViTien viTien = viTienMapper.toEntity(viTienDto);
         viTien.setLv(loaiVi);
-        viTien.setTt(trangThai);
+
         viTien = viTienRepository.save(viTien);
 
         return viTienMapper.toRes(viTien);
     }
 
     @Override
-    public void update(Integer integer, ViTienDto viTienDto) {
-        super.update(integer, viTienDto);
-    }
+    public void update(Integer id, ViTienDto viTienDto) {
+        ViTien viTien = findById.findViTienById(id);
+        if (viTienDto.getLvId() != null) {
+            LoaiVi loaiVi = findById.findLoaiViById(viTienDto.getLvId());
+            viTien.setLv(loaiVi);
+        }
 
-    @Override
-    public void deleteById(Integer integer) {
-        super.deleteById(integer);
+        viTienMapper.updateEntity(viTienDto, viTien);
+        viTienRepository.save(viTien);
     }
 }
