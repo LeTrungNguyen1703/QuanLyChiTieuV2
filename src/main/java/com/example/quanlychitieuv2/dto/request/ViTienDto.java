@@ -15,5 +15,5 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ViTienDto implements Serializable {
 
-    private String
+    private String tenVi;
 }
