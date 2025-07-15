@@ -13,8 +13,6 @@ import java.io.Serializable;
  */
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
-@Setter
 public class LoaiKhoanChiResponse implements Serializable {
     private Integer id;
     private String lkcTen;
