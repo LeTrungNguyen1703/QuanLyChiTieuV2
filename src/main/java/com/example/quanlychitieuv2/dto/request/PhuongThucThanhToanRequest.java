@@ -22,8 +22,5 @@ public class PhuongThucThanhToanRequest implements Serializable {
     @NotEmpty
     @NotBlank
     private String ptttLoai;
-    @NotNull
-    @NotEmpty
-    @NotBlank
     private String ptttSoTk;
 }

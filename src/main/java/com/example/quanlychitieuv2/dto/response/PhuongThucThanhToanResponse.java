@@ -13,12 +13,6 @@ import java.io.Serializable;
 /**
  * DTO for {@link com.example.quanlychitieuv2.entity.PhuongThucThanhToan}
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class PhuongThucThanhToanResponse implements Serializable {
+public record PhuongThucThanhToanResponse(Integer id, String ptttLoai, String ptttSoTk) implements Serializable {
 
-    private Integer id;
-    private String ptttLoai;
-    private String ptttSoTk;
 }
