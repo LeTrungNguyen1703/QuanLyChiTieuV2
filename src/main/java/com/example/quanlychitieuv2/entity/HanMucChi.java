@@ -1,5 +1,6 @@
 package com.example.quanlychitieuv2.entity;
 
+import com.example.quanlychitieuv2.enums.TrangThaiHoatDong;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -30,10 +31,9 @@ public class HanMucChi {
     @JoinColumn(name = "VT_Id", nullable = false)
     private ViTien vt;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "TT_ID", nullable = false)
-    private TrangThai tt;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tt_Ten", nullable = false)
+    private TrangThaiHoatDong trangThaiHoatDong;
 
     @NotNull
     @Column(name = "HMC_SoTien", nullable = false, precision = 10, scale = 2)

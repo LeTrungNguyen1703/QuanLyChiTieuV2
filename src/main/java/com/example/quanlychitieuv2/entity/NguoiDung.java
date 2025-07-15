@@ -53,10 +53,6 @@ public class NguoiDung {
     @OneToMany(mappedBy = "nd", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<SoHu> soHus = new LinkedHashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tt_id", nullable = false)
-    private TrangThai tt;
-
     @PrePersist
     public void prePersist() {
         if (ndNgaytao == null) {

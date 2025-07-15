@@ -16,6 +16,5 @@ public interface FindById {
     PhuongThucThanhToan findPhuongThucThanhToanById(Integer id);
     QuyenTruyCap findQuyenTruyCapById(Integer id);
     SoHu findSoHuById(SoHuId id);
-    TrangThai findTrangThaiById(Integer id);
     ViTien findViTienById(Integer id);
 }

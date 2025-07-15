@@ -1,7 +1,6 @@
 package com.example.quanlychitieuv2.dto.response;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import com.example.quanlychitieuv2.enums.TrangThaiHoatDong;
 import lombok.*;
 
 import java.io.Serializable;
@@ -16,10 +15,8 @@ import java.io.Serializable;
 public class ViTienResponse implements Serializable {
     private Integer id;
     private String tenVi;
-    private Integer lvId;
-    private String lvLvTen;
-    private Integer ttId;
-    private String ttTtTen;
-    private String ttTtMota;
     private Double vtSodu;
+    private Integer lvId;
+    private String lvTen;
+    private TrangThaiHoatDong trangThaiHoatDong;
 }

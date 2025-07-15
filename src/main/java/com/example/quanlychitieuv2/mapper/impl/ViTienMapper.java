@@ -12,7 +12,14 @@ import org.mapstruct.*;
 public interface ViTienMapper extends BaseMapper<ViTienDto, ViTienResponse, ViTien> {
 
     @Override
+    @Mapping(source = "lv.id", target = "lvId")
+    @Mapping(source = "lv.lvTen", target = "lvTen")
+    ViTienResponse toRes(ViTien entity);
+
+    @Override
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "lv", ignore = true)
     ViTien updateEntity(ViTienDto viTienDto, @MappingTarget ViTien entity);
+
+
 }

@@ -25,7 +25,6 @@ public class FindByIdImpl implements FindById {
     QuyenTruyCapRepository quyenTruyCapRepository;
     SoHuRepository soHuRepository;
     LoaiKhoanChiRepository loaiKhoanChiRepository;
-    TrangThaiRepository trangThaiRepository;
 
     @Override
     public LoaiKhoanChi findLoaiKhoanChiById(Integer id) {
@@ -97,12 +96,6 @@ public class FindByIdImpl implements FindById {
     public SoHu findSoHuById(SoHuId id) {
         return soHuRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Sở hữu không tồn tại với ID: " + id));
-    }
-
-    @Override
-    public TrangThai findTrangThaiById(Integer id) {
-        return trangThaiRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFound("Trạng thái không tồn tại với ID: " + id));
     }
 
     @Override

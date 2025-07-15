@@ -28,10 +28,9 @@ public class ViTien {
     @JoinColumn(name = "LV_Id", nullable = false)
     private LoaiVi lv;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "TT_ID", nullable = false)
-    private TrangThai tt;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tt_Ten", nullable = false)
+    private TrangThaiHoatDong trangThaiHoatDong;
 
     @NotNull
     @Column(name = "VT_SoDu", nullable = false)

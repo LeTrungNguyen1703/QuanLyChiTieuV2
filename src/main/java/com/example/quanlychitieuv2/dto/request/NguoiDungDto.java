@@ -31,12 +31,4 @@ public class NguoiDungDto implements Serializable {
     @NotEmpty
     @NotBlank
     private String ndMatkhau;
-    @NotNull
-    @Size(max = 50)
-    @NotEmpty
-    @NotBlank
-    private String ndTrangthai;
-
-    @NotNull
-    private int tt_id;
 }
