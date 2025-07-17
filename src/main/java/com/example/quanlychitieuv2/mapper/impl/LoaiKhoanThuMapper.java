@@ -1,6 +1,6 @@
 package com.example.quanlychitieuv2.mapper.impl;
 
-import com.example.quanlychitieuv2.dto.request.LoaiKhoanThuDto;
+import com.example.quanlychitieuv2.dto.request.LoaiKhoanThu.LoaiKhoanThuDto;
 import com.example.quanlychitieuv2.dto.response.LoaiKhoanThuResponse;
 import com.example.quanlychitieuv2.entity.LoaiKhoanThu;
 import com.example.quanlychitieuv2.mapper.BaseMapper;

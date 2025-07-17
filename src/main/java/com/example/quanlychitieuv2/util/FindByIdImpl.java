@@ -69,7 +69,7 @@ public class FindByIdImpl implements FindById {
     }
 
     @Override
-    public NguoiDung findNguoiDungById(Integer id) {
+    public User findNguoiDungById(Integer id) {
         return nguoiDungRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Người dùng không tồn tại với ID: " + id));
     }

@@ -1,5 +1,6 @@
 package com.example.quanlychitieuv2.dto.request;
 
+import com.example.quanlychitieuv2.entity.User;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,12 +9,12 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * DTO for {@link com.example.quanlychitieuv2.entity.NguoiDung}
+ * DTO for {@link User}
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NguoiDungDto implements Serializable {
+public class UserRequest implements Serializable {
     private Integer pqId;
     @NotNull
     @Size(max = 255)

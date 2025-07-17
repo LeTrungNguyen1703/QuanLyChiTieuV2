@@ -1,4 +1,4 @@
-package com.example.quanlychitieuv2.dto.request;
+package com.example.quanlychitieuv2.dto.request.LoaiKhoanChi;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,15 +11,16 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * DTO for {@link com.example.quanlychitieuv2.entity.LoaiKhoanThu}
+ * DTO for {@link com.example.quanlychitieuv2.entity.LoaiKhoanChi}
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoaiKhoanThuDto implements Serializable {
+public class LoaiKhoanChiDto implements Serializable {
     @NotNull
-    @Size(max = 256)
+    @Size(max = 255)
     @NotEmpty
     @NotBlank
-    private String lktTen;
+    private String lkcTen;
+    private String lkcMota;
 }

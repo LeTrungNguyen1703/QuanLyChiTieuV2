@@ -1,9 +1,7 @@
 package com.example.quanlychitieuv2.controller.impl;
 
 import com.example.quanlychitieuv2.controller.AbstractBaseController;
-import com.example.quanlychitieuv2.dto.request.PhanQuyenRequest;
 import com.example.quanlychitieuv2.dto.response.PhanQuyenResponse;
-import com.example.quanlychitieuv2.entity.PhanQuyen;
 import com.example.quanlychitieuv2.service.AbstractBaseService;
 import com.example.quanlychitieuv2.service.impl.PhanQuyenServiceImpl;
 import lombok.AccessLevel;

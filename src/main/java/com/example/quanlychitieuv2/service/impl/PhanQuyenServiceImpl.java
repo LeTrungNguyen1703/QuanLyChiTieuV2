@@ -1,8 +1,6 @@
 package com.example.quanlychitieuv2.service.impl;
 
-import com.example.quanlychitieuv2.dto.request.PhanQuyenRequest;
 import com.example.quanlychitieuv2.dto.response.PhanQuyenResponse;
-import com.example.quanlychitieuv2.entity.PhanQuyen;
 import com.example.quanlychitieuv2.mapper.BaseMapper;
 import com.example.quanlychitieuv2.mapper.impl.PhanQuyenMapper;
 import com.example.quanlychitieuv2.repository.PhanQuyenRepository;

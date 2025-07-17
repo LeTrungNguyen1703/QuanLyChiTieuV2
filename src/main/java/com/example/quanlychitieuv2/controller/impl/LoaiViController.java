@@ -1,7 +1,7 @@
 package com.example.quanlychitieuv2.controller.impl;
 
 import com.example.quanlychitieuv2.controller.AbstractBaseController;
-import com.example.quanlychitieuv2.dto.request.LoaiViRequest;
+import com.example.quanlychitieuv2.dto.request.LoaiVi.LoaiViRequest;
 import com.example.quanlychitieuv2.dto.response.LoaiViResponse;
 import com.example.quanlychitieuv2.entity.LoaiVi;
 import com.example.quanlychitieuv2.service.AbstractBaseService;

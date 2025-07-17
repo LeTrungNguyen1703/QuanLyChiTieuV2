@@ -1,16 +1,14 @@
 package com.example.quanlychitieuv2.controller.impl;
 
 import com.example.quanlychitieuv2.controller.AbstractBaseController;
-import com.example.quanlychitieuv2.dto.request.LoaiKhoanThuDto;
+import com.example.quanlychitieuv2.dto.request.LoaiKhoanThu.LoaiKhoanThuDto;
 import com.example.quanlychitieuv2.dto.response.LoaiKhoanThuResponse;
 import com.example.quanlychitieuv2.entity.LoaiKhoanThu;
 import com.example.quanlychitieuv2.service.AbstractBaseService;
-import com.example.quanlychitieuv2.service.impl.LoaiKhoanChiSerViceImpl;
 import com.example.quanlychitieuv2.service.impl.LoaiKhoanThuServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

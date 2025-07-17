@@ -15,7 +15,7 @@ public class SoHu {
     @MapsId("ndId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "ND_Id", nullable = false)
-    private NguoiDung nd;
+    private User nd;
 
     @MapsId("vtId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

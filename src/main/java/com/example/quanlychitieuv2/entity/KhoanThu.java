@@ -20,7 +20,7 @@ public class KhoanThu {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ND_Id", nullable = false)
-    private NguoiDung nd;
+    private User nd;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
