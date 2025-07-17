@@ -1,5 +1,6 @@
 package com.example.quanlychitieuv2.service;
 
+import com.example.quanlychitieuv2.enums.ErrorCode;
 import com.example.quanlychitieuv2.exception.ResourceNotFound;
 import com.example.quanlychitieuv2.mapper.BaseMapper;
 import lombok.AccessLevel;
@@ -29,8 +30,7 @@ public abstract class AbstractBaseService<Req, Res, E, ID> implements BaseServic
     }
 
     public Res findById(ID id) {
-        E entity = jpaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFound("Entity not found with id " + id));
+        E entity = this.getEntityById(id);
         return getMapper().toRes(entity);
     }
 
@@ -41,8 +41,7 @@ public abstract class AbstractBaseService<Req, Res, E, ID> implements BaseServic
     }
 
     public void update(ID id, Req req) {
-        E entity = jpaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFound("Entity not found with id " + id));
+        E entity = this.getEntityById(id);
         entity = getMapper().updateEntity(req, entity);
         jpaRepository.save(entity);
     }
@@ -51,4 +50,9 @@ public abstract class AbstractBaseService<Req, Res, E, ID> implements BaseServic
         jpaRepository.deleteById(id);
     }
 
+    private E getEntityById(ID id) {
+        String errorCode = ErrorCode.NOT_FOUND.getMessage() + " with id " + id;
+        return jpaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound(errorCode));
+    }
 }

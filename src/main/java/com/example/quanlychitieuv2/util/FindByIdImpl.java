@@ -1,6 +1,7 @@
 package com.example.quanlychitieuv2.util;
 
 import com.example.quanlychitieuv2.entity.*;
+import com.example.quanlychitieuv2.enums.ErrorCode;
 import com.example.quanlychitieuv2.exception.ResourceNotFound;
 import com.example.quanlychitieuv2.repository.*;
 import lombok.AccessLevel;
@@ -17,7 +18,7 @@ public class FindByIdImpl implements FindById {
     LoaiViRepository loaiViRepository;
     ViTienRepository viTienRepository;
     PhuongThucThanhToanRepository phuongThucThanhToanRepository;
-    NguoiDungRepository nguoiDungRepository;
+    UserRepository userRepository;
     LoaiKhoanThuRepository loaiKhoanThuRepository;
     KhoanChiRepository khoanChiRepository;
     KhoanThuRepository khoanThuRepository;
@@ -31,9 +32,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public LoaiKhoanChi findLoaiKhoanChiById(Integer id) {
         log.info("Tìm loại khoản chi với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
             LoaiKhoanChi loaiKhoanChi = loaiKhoanChiRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Loại khoản chi không tồn tại với ID: " + id));
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy loại khoản chi: {}", loaiKhoanChi);
             return loaiKhoanChi;
         } catch (ResourceNotFound ex) {
@@ -48,9 +50,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public LoaiKhoanThu findLoaiKhoanThuById(Integer id) {
         log.info("Tìm loại khoản thu với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
             LoaiKhoanThu loaiKhoanThu = loaiKhoanThuRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Loại khoản thu không tồn tại với ID: " + id));
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy loại khoản thu: {}", loaiKhoanThu);
             return loaiKhoanThu;
         } catch (ResourceNotFound ex) {
@@ -65,9 +68,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public HanMucChi findHanMucChiById(HanMucChiId id) {
         log.info("Tìm hạn mức chi với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
             HanMucChi hanMucChi = hanMucChiRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Hạn mức chi không tồn tại với ID: " + id));
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy hạn mức chi: {}", hanMucChi);
             return hanMucChi;
         } catch (ResourceNotFound ex) {
@@ -82,9 +86,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public KhoanChi findKhoanChiById(Integer id) {
         log.info("Tìm khoản chi với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
             KhoanChi khoanChi = khoanChiRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Khoản chi không tồn tại với ID: " + id));
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy khoản chi: {}", khoanChi);
             return khoanChi;
         } catch (ResourceNotFound ex) {
@@ -99,9 +104,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public KhoanThu findKhoanThuById(Integer id) {
         log.info("Tìm khoản thu với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
             KhoanThu khoanThu = khoanThuRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Khoản thu không tồn tại với ID: " + id));
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy khoản thu: {}", khoanThu);
             return khoanThu;
         } catch (ResourceNotFound ex) {
@@ -116,9 +122,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public LoaiVi findLoaiViById(Integer id) {
         log.info("Tìm loại ví với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
             LoaiVi loaiVi = loaiViRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Loại ví không tồn tại với ID: " + id));
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy loại ví: {}", loaiVi);
             return loaiVi;
         } catch (ResourceNotFound ex) {
@@ -133,9 +140,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public User findNguoiDungById(Integer id) {
         log.info("Tìm người dùng với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
-            User nguoiDung = nguoiDungRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Người dùng không tồn tại với ID: " + id));
+            User nguoiDung = userRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy người dùng: {}", nguoiDung);
             return nguoiDung;
         } catch (ResourceNotFound ex) {
@@ -150,9 +158,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public PhuongThucThanhToan findPhuongThucThanhToanById(Integer id) {
         log.info("Tìm phương thức thanh toán với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
             PhuongThucThanhToan phuongThucThanhToan = phuongThucThanhToanRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Phương thức thanh toán không tồn tại với ID: " + id));
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy phương thức thanh toán: {}", phuongThucThanhToan);
             return phuongThucThanhToan;
         } catch (ResourceNotFound ex) {
@@ -167,9 +176,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public SoHu findSoHuById(SoHuId id) {
         log.info("Tìm sở hữu với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
             SoHu soHu = soHuRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Sở hữu không tồn tại với ID: " + id));
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy sở hữu: {}", soHu);
             return soHu;
         } catch (ResourceNotFound ex) {
@@ -184,9 +194,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public ViTien findViTienById(Integer id) {
         log.info("Tìm ví tiền với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
             ViTien viTien = viTienRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Ví tiền không tồn tại với ID: " + id));
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy ví tiền: {}", viTien);
             return viTien;
         } catch (ResourceNotFound ex) {
@@ -201,9 +212,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public Permission findPermissionById(String id) {
         log.info("Tìm permission với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
             Permission permission = permissionRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Permission không tồn tại với ID: " + id));
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy permission: {}", permission);
             return permission;
         } catch (ResourceNotFound ex) {
@@ -218,9 +230,10 @@ public class FindByIdImpl implements FindById {
     @Override
     public Role findRoleById(String id) {
         log.info("Tìm role với ID: {}", id);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
         try {
             Role role = roleRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound("Role không tồn tại với ID: " + id));
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
             log.info("Đã tìm thấy role: {}", role);
             return role;
         } catch (ResourceNotFound ex) {

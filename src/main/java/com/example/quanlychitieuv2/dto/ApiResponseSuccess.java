@@ -2,10 +2,11 @@ package com.example.quanlychitieuv2.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ApiResponseSuccess<Res>{
     String message = "Success";
