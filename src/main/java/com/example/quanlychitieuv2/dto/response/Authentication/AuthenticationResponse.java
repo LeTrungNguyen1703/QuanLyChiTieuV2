@@ -1,4 +1,4 @@
-package com.example.quanlychitieuv2.dto.response;
+package com.example.quanlychitieuv2.dto.response.Authentication;
 
 import lombok.Builder;
 import lombok.Getter;

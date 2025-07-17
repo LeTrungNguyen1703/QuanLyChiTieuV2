@@ -12,10 +12,10 @@ public class SoHu {
     @EmbeddedId
     private SoHuId id;
 
-    @MapsId("ndId")
+    @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "ND_Id", nullable = false)
-    private User nd;
+    @JoinColumn(name = "user_Id", nullable = false)
+    private User user;
 
     @MapsId("vtId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

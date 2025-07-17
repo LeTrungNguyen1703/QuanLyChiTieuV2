@@ -1,0 +1,130 @@
+{
+  "info": {
+    "_postman_id": "b4e27c65-f8a2-4d12-a191-8d70a6e9dc48",
+    "name": "Permission API",
+    "description": "API Collection cho Permission",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Permission",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/permissions",
+          "host": ["{{base_url}}"],
+          "path": ["permissions"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"CREATE_USER\",\n  \"description\": \"Permission to create users\"\n}"
+        },
+        "description": "Tạo mới quyền (permission)"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Permissions",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/permissions",
+          "host": ["{{base_url}}"],
+          "path": ["permissions"]
+        },
+        "description": "Lấy danh sách tất cả quyền"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Permission By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/permissions/get-by-id/CREATE_USER",
+          "host": ["{{base_url}}"],
+          "path": [
+            "permissions",
+            "get-by-id",
+            "CREATE_USER"
+          ]
+        },
+        "description": "Lấy quyền theo ID (name)"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Permission",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/permissions/CREATE_USER",
+          "host": ["{{base_url}}"],
+          "path": ["permissions", "CREATE_USER"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"CREATE_USER\",\n  \"description\": \"Permission to create and manage users\"\n}"
+        },
+        "description": "Cập nhật quyền theo ID (name)"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Permission",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/permissions/CREATE_USER",
+          "host": ["{{base_url}}"],
+          "path": ["permissions", "CREATE_USER"]
+        },
+        "description": "Xóa quyền theo ID (name)"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
+

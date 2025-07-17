@@ -19,8 +19,8 @@ public class KhoanThu {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ND_Id", nullable = false)
-    private User nd;
+    @JoinColumn(name = "user_Id", nullable = false)
+    private User user;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

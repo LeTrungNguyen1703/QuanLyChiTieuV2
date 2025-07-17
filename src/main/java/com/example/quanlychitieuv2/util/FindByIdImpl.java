@@ -19,12 +19,12 @@ public class FindByIdImpl implements FindById {
     LoaiKhoanThuRepository loaiKhoanThuRepository;
     KhoanChiRepository khoanChiRepository;
     KhoanThuRepository khoanThuRepository;
-    ChucNangRepository chucNangRepository;
     HanMucChiRepository hanMucChiRepository;
-    PhanQuyenRepository phanQuyenRepository;
-    QuyenTruyCapRepository quyenTruyCapRepository;
     SoHuRepository soHuRepository;
     LoaiKhoanChiRepository loaiKhoanChiRepository;
+    RoleRepository roleRepository;
+    PermissionRepository permissionRepository;
+
 
     @Override
     public LoaiKhoanChi findLoaiKhoanChiById(Integer id) {
@@ -36,12 +36,6 @@ public class FindByIdImpl implements FindById {
     public LoaiKhoanThu findLoaiKhoanThuById(Integer id) {
         return loaiKhoanThuRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Loại khoản thu không tồn tại với ID: " + id));
-    }
-
-    @Override
-    public ChucNang findChucNangById(Integer id) {
-        return chucNangRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFound("Chức năng không tồn tại với ID: " + id));
     }
 
     @Override
@@ -75,21 +69,9 @@ public class FindByIdImpl implements FindById {
     }
 
     @Override
-    public PhanQuyen findPhanQuyenById(Integer id) {
-        return phanQuyenRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFound("Phân quyền không tồn tại với ID: " + id));
-    }
-
-    @Override
     public PhuongThucThanhToan findPhuongThucThanhToanById(Integer id) {
         return phuongThucThanhToanRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Phương thức thanh toán không tồn tại với ID: " + id));
-    }
-
-    @Override
-    public QuyenTruyCap findQuyenTruyCapById(Integer id) {
-        return quyenTruyCapRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFound("Quyền truy cập không tồn tại với ID: " + id));
     }
 
     @Override
@@ -102,5 +84,17 @@ public class FindByIdImpl implements FindById {
     public ViTien findViTienById(Integer id) {
         return viTienRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("Ví tiền không tồn tại với ID: " + id));
+    }
+
+    @Override
+    public Permission findPermissionById(String id) {
+        return permissionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Permission không tồn tại với ID: " + id));
+    }
+
+    @Override
+    public Role findRoleById(String id) {
+        return roleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Role không tồn tại với ID: " + id));
     }
 }

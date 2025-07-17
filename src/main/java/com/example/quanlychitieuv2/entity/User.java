@@ -14,37 +14,37 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "nguoi_dung")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ND_Id", nullable = false)
+    @Column(name = "user_Id", nullable = false)
     private Integer id;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "ND_Ten", nullable = false)
+    @Column(name = "user_Ten", nullable = false)
     private String ndTen;
 
     @Size(max = 255)
-    @Column(name = "ND_Email")
+    @Column(name = "user_Email")
     private String ndEmail;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "ND_MatKhau", nullable = false)
+    @Column(name = "user_MatKhau", nullable = false)
     private String ndMatkhau;
 
-    @Column(name = "ND_NgayTao")
+    @Column(name = "user_NgayTao")
     private LocalDate ndNgaytao;
 
-    @OneToMany(mappedBy = "nd", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<KhoanChi> khoanChis = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "nd", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<KhoanThu> khoanThus = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "nd", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<SoHu> soHus = new LinkedHashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {

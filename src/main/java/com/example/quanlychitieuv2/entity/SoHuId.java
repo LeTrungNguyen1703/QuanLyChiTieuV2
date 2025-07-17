@@ -16,25 +16,11 @@ import java.util.Objects;
 public class SoHuId implements Serializable {
     private static final long serialVersionUID = -3825352403975678533L;
     @NotNull
-    @Column(name = "ND_Id", nullable = false)
-    private Integer ndId;
+    @Column(name = "USER_Id", nullable = false)
+    private Integer userId;
 
     @NotNull
     @Column(name = "VT_Id", nullable = false)
     private Integer vtId;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        SoHuId entity = (SoHuId) o;
-        return Objects.equals(this.ndId, entity.ndId) &&
-                Objects.equals(this.vtId, entity.vtId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(ndId, vtId);
-    }
 
 }
