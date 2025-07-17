@@ -14,7 +14,6 @@ public class ViTienResponse implements Serializable {
     private Integer id;
     private String tenVi;
     private Double vtSodu;
-    private Integer lvId;
-    private String lvTen;
+    private LoaiViResponse loaiVi;
     private TrangThaiHoatDong trangThaiHoatDong;
 }

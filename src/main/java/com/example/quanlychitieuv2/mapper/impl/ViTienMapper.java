@@ -12,8 +12,8 @@ import org.mapstruct.*;
 public interface ViTienMapper extends BaseMapper<ViTienDto, ViTienResponse, ViTien> {
 
     @Override
-    @Mapping(source = "lv.id", target = "lvId")
-    @Mapping(source = "lv.lvTen", target = "lvTen")
+    @Mapping(source = "lv.id", target = "loaiVi.id")
+    @Mapping(source = "lv.lvTen", target = "loaiVi.lvTen")
     ViTienResponse toRes(ViTien entity);
 
     @Override
