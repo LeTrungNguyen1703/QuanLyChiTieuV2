@@ -12,4 +12,16 @@ import org.mapstruct.*;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RoleMapper extends BaseMapper<RoleRequest, RoleResponse, Role> {
 
+    @Override
+
+    @Mapping(target = "permissions", ignore = true)
+    @Mapping(target = "users", ignore = true)
+    Role updateEntity(RoleRequest roleRequest, @MappingTarget Role entity);
+
+    @Override
+    RoleResponse toRes(Role entity);
+
+    @Override
+    @Mapping(target = "permissions", ignore = true)
+    Role toEntity(RoleRequest roleRequest);
 }

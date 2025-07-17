@@ -1,0 +1,130 @@
+{
+  "info": {
+    "_postman_id": "c8f31e45-8d7c-4a2e-9a7b-f42e38a92d85",
+    "name": "Role API",
+    "description": "API Collection cho Role",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Role",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/role",
+          "host": ["{{base_url}}"],
+          "path": ["role"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"ADMIN\",\n  \"description\": \"Quyền quản trị hệ thống\",\n  \"permissions\": [\"CREATE_USER\", \"DELETE_USER\", \"VIEW_REPORTS\"]\n}"
+        },
+        "description": "Tạo mới vai trò (role)"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Roles",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/role",
+          "host": ["{{base_url}}"],
+          "path": ["role"]
+        },
+        "description": "Lấy danh sách tất cả vai trò"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Role By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/role/get-by-id/ADMIN",
+          "host": ["{{base_url}}"],
+          "path": [
+            "role",
+            "get-by-id",
+            "ADMIN"
+          ]
+        },
+        "description": "Lấy vai trò theo ID (name)"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Role",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/role/ADMIN",
+          "host": ["{{base_url}}"],
+          "path": ["role", "ADMIN"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"ADMIN\",\n  \"description\": \"Quyền quản trị hệ thống cấp cao\",\n  \"permissions\": [\"CREATE_USER\", \"DELETE_USER\", \"VIEW_REPORTS\", \"MANAGE_ROLES\"]\n}"
+        },
+        "description": "Cập nhật vai trò theo ID (name)"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Role",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/role/ADMIN",
+          "host": ["{{base_url}}"],
+          "path": ["role", "ADMIN"]
+        },
+        "description": "Xóa vai trò theo ID (name)"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
+
