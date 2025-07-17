@@ -18,6 +18,11 @@ public class ApiResponseSuccess<Res>{
         this.data = data;
     }
 
+    public ApiResponseSuccess(String message, Integer status) {
+        this.message = message;
+        this.status = status;
+    }
+
     public ApiResponseSuccess(Res data) {
         this.data = data;
     }
