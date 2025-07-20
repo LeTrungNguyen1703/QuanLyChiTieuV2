@@ -57,7 +57,7 @@ public class SecurityConfig {
                 request.requestMatchers(HttpMethod.POST, PUBLIC_ENPOINT).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()//
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
         );
 
         httpSecurity.oauth2ResourceServer(

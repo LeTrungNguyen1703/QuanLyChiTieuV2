@@ -16,6 +16,8 @@ public enum ErrorCode {
     UNAUTHENTICATED(3, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(4, "Unauthorized", HttpStatus.FORBIDDEN),
     AUTHENTICATION_FAILED(5, "Authentication failed", HttpStatus.UNAUTHORIZED),
+    USERNAME_EXISTS(6, "Username already exists", HttpStatus.BAD_REQUEST),
+    ROLE_NOT_FOUND(7, "Role not found", HttpStatus.BAD_REQUEST),
     ;
 
     Integer code;

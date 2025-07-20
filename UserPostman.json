@@ -1,0 +1,130 @@
+{
+  "info": {
+    "_postman_id": "a7b45d32-8c4a-4e91-87f3-89a5e3c45a92",
+    "name": "User API",
+    "description": "API Collection cho User",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/user",
+          "host": ["{{base_url}}"],
+          "path": ["user"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ndTen\": \"Nguyen Van A\",\n  \"ndEmail\": \"nguyenvana@example.com\",\n  \"ndMatkhau\": \"password123\",\n  \"danhSachQuyen\": [\"USER\", \"ADMIN\"]\n}"
+        },
+        "description": "Tạo mới người dùng"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/user",
+          "host": ["{{base_url}}"],
+          "path": ["user"]
+        },
+        "description": "Lấy danh sách tất cả người dùng"
+      },
+      "response": []
+    },
+    {
+      "name": "Get User By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/user/get-by-id/1",
+          "host": ["{{base_url}}"],
+          "path": [
+            "user",
+            "get-by-id",
+            "1"
+          ]
+        },
+        "description": "Lấy thông tin người dùng theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Update User",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/user/1",
+          "host": ["{{base_url}}"],
+          "path": ["user", "1"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"ndTen\": \"Nguyen Van A Updated\",\n  \"ndEmail\": \"nguyenvana_updated@example.com\",\n  \"ndMatkhau\": \"newpassword456\",\n  \"danhSachQuyen\": [\"USER\"]\n}"
+        },
+        "description": "Cập nhật thông tin người dùng theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete User",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/user/1",
+          "host": ["{{base_url}}"],
+          "path": ["user", "1"]
+        },
+        "description": "Xóa người dùng theo ID"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
+
