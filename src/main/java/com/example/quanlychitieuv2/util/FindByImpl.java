@@ -10,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -27,6 +29,7 @@ public class FindByImpl implements FindBy {
     LoaiKhoanChiRepository loaiKhoanChiRepository;
     RoleRepository roleRepository;
     PermissionRepository permissionRepository;
+    private final NgayRepository ngayRepository;
 
 
     @Override
@@ -261,5 +264,14 @@ public class FindByImpl implements FindBy {
             log.error("Lỗi khi tìm ndTen với ID: {}", username, ex);
             throw ex;
         }
+    }
+
+    @Override
+    public Ngay findNgayByNgayDayDu(LocalDate localDate) {
+        Ngay ngay = ngayRepository.findByNgayDaydu(localDate).orElse(null);
+        if (ngay == null) {
+            ngayRepository.save(ngay);
+        }
+        return ngay;
     }
 }

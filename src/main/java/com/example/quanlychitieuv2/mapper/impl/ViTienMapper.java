@@ -22,4 +22,5 @@ public interface ViTienMapper extends BaseMapper<ViTienDto, ViTienResponse, ViTi
     ViTien updateEntity(ViTienDto viTienDto, @MappingTarget ViTien entity);
 
 
+
 }

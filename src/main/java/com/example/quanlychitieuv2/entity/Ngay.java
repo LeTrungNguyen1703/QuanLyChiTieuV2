@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.Timer;
 
 @Getter
 @Setter
@@ -43,6 +44,13 @@ public class Ngay {
 
     @OneToMany(mappedBy = "ngay", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<KhoanThu> khoanThus = new LinkedHashSet<>();
+
+    public Ngay() {
+        this.ngayDaydu = LocalDate.now();
+        this.ngayTrongtuan = ngayDaydu.getDayOfWeek().getValue();
+        this.ngayTrongthang = ngayDaydu.getDayOfMonth();
+        this.ngayTrongnam = ngayDaydu.getDayOfYear();
+    }
 
     @PrePersist
     public void prePersist() {

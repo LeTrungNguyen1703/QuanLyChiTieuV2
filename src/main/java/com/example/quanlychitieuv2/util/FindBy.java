@@ -2,6 +2,8 @@ package com.example.quanlychitieuv2.util;
 
 import com.example.quanlychitieuv2.entity.*;
 
+import java.time.LocalDate;
+
 public interface FindBy {
 
     LoaiKhoanChi findLoaiKhoanChiById(Integer id);
@@ -17,4 +19,5 @@ public interface FindBy {
     Permission findPermissionById(String id);
     Role findRoleById(String id);
     User findUserByName(String username);
+    Ngay findNgayByNgayDayDu(LocalDate localDate);
 }

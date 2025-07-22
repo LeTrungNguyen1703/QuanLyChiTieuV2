@@ -4,6 +4,7 @@ import com.example.quanlychitieuv2.enums.TrangThaiHoatDong;
 import lombok.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * DTO for {@link com.example.quanlychitieuv2.entity.ViTien}
@@ -14,10 +15,10 @@ import java.io.Serializable;
 public class ViTienResponse implements Serializable {
     private Integer id;
     private String tenVi;
-    private Double vtSodu;
+    private BigDecimal vtSodu;
     private LoaiViResponse loaiVi;
     private TrangThaiHoatDong trangThaiHoatDong;
-    private UserResponse nguoiDung;
+    private ViTienResponse.UserResponse nguoiDung;
 
     @Getter
     @AllArgsConstructor

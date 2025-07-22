@@ -11,4 +11,6 @@ public interface LoaiKhoanThuMapper extends BaseMapper<LoaiKhoanThuDto, LoaiKhoa
     @Override
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     LoaiKhoanThu updateEntity(LoaiKhoanThuDto loaiKhoanThuDto, @MappingTarget LoaiKhoanThu entity);
+
+    LoaiKhoanThuDto toDto(LoaiKhoanThu loaiKhoanThu);
 }

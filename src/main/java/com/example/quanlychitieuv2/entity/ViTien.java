@@ -34,7 +34,7 @@ public class ViTien {
 
     @NotNull
     @Column(name = "VT_SoDu", nullable = false)
-    private Double vtSodu;
+    private BigDecimal vtSodu;
 
     @OneToMany(mappedBy = "vt", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<HanMucChi> hanMucChis = new LinkedHashSet<>();
@@ -49,6 +49,6 @@ public class ViTien {
     private Set<SoHu> soHus = new LinkedHashSet<>();
 
     public ViTien () {
-        this.vtSodu = 0.0;
+        this.vtSodu = BigDecimal.ZERO;
     }
 }

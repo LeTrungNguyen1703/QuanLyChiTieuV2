@@ -16,6 +16,10 @@ public class KhoanThu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "KT_Id", nullable = false)
     private Integer id;
+    @Column(name = "KT_MoTa")
+    private String moTa;
+    @Column(name = "KT_TenKhoanThu", nullable = false)
+    private String tenKhoanThu;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
