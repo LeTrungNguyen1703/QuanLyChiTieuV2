@@ -52,12 +52,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) throws AuthenticationException {
-        User user = userRepository.findByNdTen(request.getUsername())
-                .orElseThrow(() -> new ResourceNotFound(ErrorCode.NOT_FOUND.getMessage()));
 
-        boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getNdMatkhau());
+        User user = this.getUserByUsername(request.getUsername());
 
-        if (!authenticated) throw new AuthenticationException(ErrorCode.PASSWORD_NOT_MATCH.getMessage());
+        this.checkPassword(user, request.getPassword());
 
         String token = this.generateToken(user);
 
@@ -154,6 +152,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         role.getPermissions().stream().map(Permission::getName)
                 ))
                 .collect(Collectors.joining(" "));
+    }
+
+    private User getUserByUsername(String username) {
+        return userRepository.findByNdTen(username)
+                .orElseThrow(() -> new ResourceNotFound("User not found with username: " + username));
+    }
+
+    private void checkPassword(User user, String password) {
+        if (!passwordEncoder.matches(password, user.getNdMatkhau())) {
+            throw new AppException(ErrorCode.PASSWORD_NOT_MATCH.getMessage());
+        }
+
     }
 
 }
