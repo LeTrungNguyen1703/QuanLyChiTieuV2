@@ -268,10 +268,21 @@ public class FindByImpl implements FindBy {
 
     @Override
     public Ngay findNgayByNgayDayDu(LocalDate localDate) {
+        log.info("Tìm ngày với ngày đầy đủ: {}", localDate);
+        try {
         Ngay ngay = ngayRepository.findByNgayDaydu(localDate).orElse(null);
         if (ngay == null) {
-            ngayRepository.save(ngay);
+                ngay = new Ngay();
+                ngay.setNgayDaydu(localDate);
+                ngay = ngayRepository.save(ngay);
+                log.info("Đã tạo mới ngày: {}", ngay);
+            } else {
+                log.info("Đã tìm thấy ngày: {}", ngay);
         }
         return ngay;
+        } catch (Exception ex) {
+            log.error("Lỗi khi tìm hoặc tạo ngày với ngày đầy đủ: {}", localDate, ex);
+            throw ex;
+        }
     }
 }

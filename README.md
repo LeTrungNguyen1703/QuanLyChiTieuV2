@@ -54,16 +54,29 @@ mvn spring-boot:run
 - **Cập nhật khoản chi**: Chỉnh sửa thông tin khoản chi đã tạo.
 - **Xóa khoản chi**: Xóa khoản chi khỏi hệ thống.
 
-### 5. Quản lý phương thức thanh toán
+### 5. Quản lý loại khoản thu/chi
+- **Thêm loại khoản thu/chi**: Tạo các loại khoản thu/chi để phân loại các khoản thu/chi.
+- **Xem danh sách loại**: Hiển thị tất cả loại khoản thu/chi đã tạo.
+- **Cập nhật loại**: Chỉnh sửa thông tin loại khoản thu/chi.
+- **Xóa loại**: Xóa loại khoản thu/chi không còn sử dụng.
+
+### 6. Quản lý phương thức thanh toán
 - **Thêm phương thức thanh toán**: Tạo các phương thức thanh toán như tiền mặt, chuyển khoản, thẻ tín dụng...
 - **Xem danh sách phương thức**: Hiển thị tất cả phương thức thanh toán đã tạo.
 - **Cập nhật phương thức**: Chỉnh sửa thông tin phương thức thanh toán.
 - **Xóa phương thức**: Xóa phương thức thanh toán không còn sử dụng.
 
-### 6. Quản lý hạn mức chi
+### 7. Quản lý hạn mức chi
 - **Thiết lập hạn mức chi**: Đặt hạn mức chi tiêu cho các loại chi tiêu khác nhau.
 - **Theo dõi hạn mức**: Xem tình trạng sử dụng hạn mức chi tiêu.
 - **Cập nhật hạn mức**: Điều chỉnh hạn mức chi tiêu đã thiết lập.
+
+### 8. Thống kê tài chính
+- **Thống kê khoản thu theo ngày**: Xem tổng thu và số giao dịch theo từng ngày.
+- **Thống kê khoản thu theo tháng**: Xem tổng thu, thu cao nhất, thu thấp nhất, thu trung bình và số giao dịch trong một tháng, bao gồm thống kê chi tiết theo từng ngày.
+- **Thống kê khoản thu theo năm**: Xem thống kê khoản thu cho từng tháng trong một năm cụ thể, cho phép người dùng phân tích xu hướng thu nhập theo thời gian.
+- **Phân tích dữ liệu**: Hệ thống tự động tính toán và hiển thị các chỉ số thống kê quan trọng như tổng thu, thu cao nhất, thu thấp nhất, thu trung bình để người dùng có cái nhìn tổng quan về tình hình tài chính.
+- **Thống kê theo ví tiền**: Người dùng có thể xem thống kê riêng cho từng ví tiền, giúp quản lý nguồn thu chi cho từng mục đích khác nhau.
 
 ## Sử dụng API qua Postman
 Dự án cung cấp các tệp Postman để dễ dàng kiểm thử API:
@@ -79,4 +92,3 @@ Dự án cung cấp các tệp Postman để dễ dàng kiểm thử API:
 
 ## Phân quyền và bảo mật
 Ứng dụng sử dụng Spring Security và OAuth2 để xác thực và phân quyền. Người dùng cần đăng nhập để nhận token JWT và sử dụng token này cho các yêu cầu API sau đó.
-
