@@ -16,6 +16,9 @@ import java.util.List;
 public class ThongKeTheoThangResponse {
     String thoiGian;
     Double tongThu;
+    Double thuCaoNhat;
+    Double thuTrungBinh;
+    Double thuThapNhat;
     Integer soGiaoDich;
     List<ThongKeTheoNgayResponse> thongKeTheoNgays;
 }

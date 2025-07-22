@@ -1,5 +1,6 @@
 package com.example.quanlychitieuv2.service.impl;
 
+import ch.qos.logback.core.spi.LifeCycle;
 import com.example.quanlychitieuv2.dto.ThongKeTheoNgayResponse;
 import com.example.quanlychitieuv2.dto.ThongKeTheoThangResponse;
 import com.example.quanlychitieuv2.dto.request.KhoanThuRequest;
@@ -20,9 +21,11 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @Slf4j
@@ -74,19 +77,12 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
 
     }
 
-    @Override
-    public List<ThongKeTheoThangResponse> thongKeThuByViTienTheoThang(int viTienId, YearMonth thoiGian) {
-        findBy.findViTienById(viTienId);
-        LocalDate startDate = thoiGian.atDay(1);
-        LocalDate endDate = thoiGian.atEndOfMonth();
-
-
-        List<KhoanThu> khoanThus = khoanThuRepository.findByVtAndThang(viTienId, startDate, endDate);
+    public List<ThongKeTheoNgayResponse> thongKeThuByViTienTheoNgay(List<KhoanThu> khoanThus) {
 
         Map<LocalDate, List<KhoanThu>> groupedByDate = khoanThus.stream()
                 .collect(Collectors.groupingBy(khoanThu -> khoanThu.getNgay().getNgayDaydu()));
 
-        List<ThongKeTheoNgayResponse> thongKeTheoNgays = groupedByDate.entrySet().stream()
+        return groupedByDate.entrySet().stream()
                 .map(entry -> {
                     LocalDate date = entry.getKey();
                     List<KhoanThu> listInDay = entry.getValue();
@@ -104,19 +100,55 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
                             .build();
                 })
                 .sorted(Comparator.comparing(ThongKeTheoNgayResponse::getThoiGian)) // Sắp xếp theo ngày tăng dần
-                .collect(Collectors.toList());
+                .toList();
+    }
 
+    ;
+
+    @Override
+    public ThongKeTheoThangResponse thongKeThuByViTienTheoThang(int viTienId, YearMonth thoiGian) {
+        findBy.findViTienById(viTienId);
+
+        List<KhoanThu> khoanThus = this.findKhoanThuTheoThang(viTienId, thoiGian);
+
+        List<ThongKeTheoNgayResponse> thongKeTheoNgays = this.thongKeThuByViTienTheoNgay(khoanThus);
 
         DoubleSummaryStatistics statistics = khoanThus.stream()
                 .mapToDouble(khoanThu -> khoanThu.getKtSotien().doubleValue())
                 .summaryStatistics();
 
-        return List.of(new ThongKeTheoThangResponse(
-                thoiGian.toString(),
-                statistics.getSum(),
-                (int) statistics.getCount(),
-                thongKeTheoNgays
 
-        ));
+        return ThongKeTheoThangResponse.builder()
+                .thoiGian(thoiGian.toString())
+                .tongThu(statistics.getSum())
+                .thuCaoNhat(statistics.getMax())
+                .thuThapNhat(statistics.getMin())
+                .thuTrungBinh(statistics.getAverage())
+                .soGiaoDich((int) statistics.getCount())
+                .thongKeTheoNgays(thongKeTheoNgays)
+                .build();
+    }
+
+    @Override
+    public List<ThongKeTheoThangResponse> thongKeThuByViTienTheoNam(int viTienId, Year thoiGian) {
+        List<YearMonth> yearMonths = IntStream.rangeClosed(1, 12)
+                .mapToObj(month -> YearMonth.of(thoiGian.getValue(), month))
+                .toList();
+
+        List<ThongKeTheoThangResponse> thongKeTheoThangResponses = new ArrayList<>();
+
+
+        yearMonths.forEach(yearMonth -> {
+            thongKeTheoThangResponses.add(this.thongKeThuByViTienTheoThang(viTienId, yearMonth));
+        });
+        return thongKeTheoThangResponses;
+    }
+
+
+    private List<KhoanThu> findKhoanThuTheoThang(Integer viTienId, YearMonth thoiGian) {
+        LocalDate startDate = thoiGian.atDay(1);
+        LocalDate endDate = thoiGian.atEndOfMonth();
+
+        return khoanThuRepository.findByVtAndThang(viTienId, startDate, endDate);
     }
 }

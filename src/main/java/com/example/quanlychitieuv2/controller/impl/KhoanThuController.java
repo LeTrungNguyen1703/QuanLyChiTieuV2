@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Year;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -39,7 +40,17 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
             @RequestParam YearMonth thoiGian
             ) {
 
-        List<ThongKeTheoThangResponse> thongKeTheoThangRespons = khoanThuServiceImpl.thongKeThuByViTienTheoThang(viTienId, thoiGian);
+        ThongKeTheoThangResponse thongKeTheoThangRespons = khoanThuServiceImpl.thongKeThuByViTienTheoThang(viTienId, thoiGian);
+        return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoThangRespons));
+    }
+
+    @GetMapping("/thong-ke-theo-nam")
+    public ResponseEntity<ApiResponseSuccess<?>> thongKeTheoNam(
+            @RequestParam Integer viTienId,
+            @RequestParam Year thoiGian
+    ) {
+
+        List<ThongKeTheoThangResponse> thongKeTheoThangRespons = khoanThuServiceImpl.thongKeThuByViTienTheoNam(viTienId, thoiGian);
         return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoThangRespons));
     }
 

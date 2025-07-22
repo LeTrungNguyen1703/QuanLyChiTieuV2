@@ -25,4 +25,5 @@ public interface KhoanThuRepository extends JpaRepository<KhoanThu, Integer> {
             @Param("end") LocalDate end
     );
 
+
 }
