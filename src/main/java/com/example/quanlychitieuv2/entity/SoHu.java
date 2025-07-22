@@ -1,13 +1,15 @@
 package com.example.quanlychitieuv2.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "so_hu")
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class SoHu {
     @EmbeddedId
     private SoHuId id;
@@ -21,5 +23,4 @@ public class SoHu {
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "VT_Id", nullable = false)
     private ViTien vt;
-
 }

@@ -10,10 +10,20 @@ import java.io.Serializable;
  */
 @Getter
 @AllArgsConstructor
+@Setter
 public class ViTienResponse implements Serializable {
     private Integer id;
     private String tenVi;
     private Double vtSodu;
     private LoaiViResponse loaiVi;
     private TrangThaiHoatDong trangThaiHoatDong;
+    private UserResponse nguoiDung;
+
+    @Getter
+    @AllArgsConstructor
+    public static class UserResponse {
+        private Integer id;
+        private String ndTen;
+    }
+
 }

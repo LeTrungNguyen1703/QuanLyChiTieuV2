@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-public class FindByIdImpl implements FindById {
+public class FindByImpl implements FindBy {
     LoaiViRepository loaiViRepository;
     ViTienRepository viTienRepository;
     PhuongThucThanhToanRepository phuongThucThanhToanRepository;
@@ -241,6 +241,24 @@ public class FindByIdImpl implements FindById {
             throw ex;
         } catch (Exception ex) {
             log.error("Lỗi khi tìm role với ID: {}", id, ex);
+            throw ex;
+        }
+    }
+
+    @Override
+    public User findUserByName(String username) {
+        log.info("Tìm ndTen với userName: {}", username);
+        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + username;
+        try {
+            User user = userRepository.findByNdTen(username)
+                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
+            log.info("Đã tìm thấy ndTen: {}", username);
+            return user;
+        } catch (ResourceNotFound ex) {
+            log.error("Không tìm thấy ndTen với ID: {}", username);
+            throw ex;
+        } catch (Exception ex) {
+            log.error("Lỗi khi tìm ndTen với ID: {}", username, ex);
             throw ex;
         }
     }

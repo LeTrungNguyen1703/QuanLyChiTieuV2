@@ -45,7 +45,7 @@ public class ViTien {
     @OneToMany(mappedBy = "vt", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<KhoanThu> khoanThus = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "vt", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "vt", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<SoHu> soHus = new LinkedHashSet<>();
 
     public ViTien () {

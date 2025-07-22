@@ -11,20 +11,17 @@ import com.example.quanlychitieuv2.mapper.impl.UserMapper;
 import com.example.quanlychitieuv2.repository.RoleRepository;
 import com.example.quanlychitieuv2.repository.UserRepository;
 import com.example.quanlychitieuv2.service.AbstractBaseService;
-import com.example.quanlychitieuv2.util.FindById;
+import com.example.quanlychitieuv2.util.FindBy;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -33,16 +30,16 @@ import java.util.Set;
 public class UserSeviceImpl extends AbstractBaseService<UserRequest, UserResponse, User,Integer> {
 
     UserMapper userMapper;
-    FindById findById;
+    FindBy findBy;
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
 
     @Autowired
-    public UserSeviceImpl(UserRepository userRepository, UserMapper userMapper, FindById findById, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    public UserSeviceImpl(UserRepository userRepository, UserMapper userMapper, FindBy findBy, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         super(userRepository);
         this.userMapper = userMapper;
-        this.findById = findById;
+        this.findBy = findBy;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
@@ -74,7 +71,7 @@ public class UserSeviceImpl extends AbstractBaseService<UserRequest, UserRespons
     private List<Role> getRolesFromRequest(UserRequest userRequest) {
         List<Role> roles = roleRepository.findAllById(userRequest.getDanhSachQuyen());
         if (roles.isEmpty()) {
-            Role role = findById.findRoleById("ROLE_USER"); // Default role if none provided
+            Role role = findBy.findRoleById("ROLE_USER"); // Default role if none provided
             roles.add(role);
         }
 

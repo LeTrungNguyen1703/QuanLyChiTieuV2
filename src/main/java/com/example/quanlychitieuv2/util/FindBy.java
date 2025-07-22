@@ -2,7 +2,7 @@ package com.example.quanlychitieuv2.util;
 
 import com.example.quanlychitieuv2.entity.*;
 
-public interface FindById {
+public interface FindBy {
 
     LoaiKhoanChi findLoaiKhoanChiById(Integer id);
     LoaiKhoanThu  findLoaiKhoanThuById(Integer id);
@@ -16,4 +16,5 @@ public interface FindById {
     ViTien findViTienById(Integer id);
     Permission findPermissionById(String id);
     Role findRoleById(String id);
+    User findUserByName(String username);
 }

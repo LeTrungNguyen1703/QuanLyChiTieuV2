@@ -8,29 +8,27 @@ import com.example.quanlychitieuv2.mapper.BaseMapper;
 import com.example.quanlychitieuv2.mapper.impl.RoleMapper;
 import com.example.quanlychitieuv2.repository.PermissionRepository;
 import com.example.quanlychitieuv2.service.AbstractBaseService;
-import com.example.quanlychitieuv2.util.FindById;
+import com.example.quanlychitieuv2.util.FindBy;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Slf4j
 public class RoleServiceImpl extends AbstractBaseService<RoleRequest, RoleResponse, Role, String> {
 
     RoleMapper roleMapper;
-    FindById findById;
+    FindBy findBy;
     PermissionRepository permissionRepository;
 
-    public RoleServiceImpl(JpaRepository<Role, String> jpaRepository, RoleMapper roleMapper, PermissionRepository permissionRepository, FindById findById) {
+    public RoleServiceImpl(JpaRepository<Role, String> jpaRepository, RoleMapper roleMapper, PermissionRepository permissionRepository, FindBy findBy) {
         super(jpaRepository);
         this.roleMapper = roleMapper;
         this.permissionRepository = permissionRepository;
-        this.findById = findById;
+        this.findBy = findBy;
     }
 
     @Override
@@ -54,7 +52,7 @@ public class RoleServiceImpl extends AbstractBaseService<RoleRequest, RoleRespon
     @Override
     public void update(String s, RoleRequest roleRequest) {
         log.info("Updating role with request: {}", roleRequest);
-        Role exitsRole = findById.findRoleById(s);
+        Role exitsRole = findBy.findRoleById(s);
 
         if (roleRequest.getPermissions() != null) {
             List<Permission> permissions = permissionRepository.findAllById(roleRequest.getPermissions());
