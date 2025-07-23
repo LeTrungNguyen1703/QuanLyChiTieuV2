@@ -6,7 +6,7 @@
 ## Yêu cầu hệ thống
 - Java 17 hoặc cao hơn
 - Maven
-- Cơ sở dữ liệu tương thích (MySQL/PostgreSQL)
+- Cơ sở dữ liệu tương thích (MySQL)
 
 ## Cài đặt và chạy ứng dụng
 1. Clone dự án về máy của bạn:
