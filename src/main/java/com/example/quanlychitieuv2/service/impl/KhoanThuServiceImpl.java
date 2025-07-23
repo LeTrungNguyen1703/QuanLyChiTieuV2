@@ -26,6 +26,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Service xử lý các thao tác liên quan đến Khoản Thu
+ * Cung cấp các phương thức CRUD và thống kê dữ liệu khoản thu theo ngày, tháng, năm
+ */
 @Service
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -42,11 +46,20 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
         this.findBy = findBy;
     }
 
+    /**
+     * Lấy đối tượng Mapper để chuyển đổi giữa các lớp DTO và Entity
+     * @return Mapper cho KhoanThu
+     */
     @Override
     protected BaseMapper<KhoanThuRequest, KhoanThuResponse, KhoanThu> getMapper() {
         return khoanThuMapper;
     }
 
+    /**
+     * Tạo mới một khoản thu và cập nhật số dư ví tiền
+     * @param khoanThuRequest Request chứa thông tin khoản thu cần tạo
+     * @return KhoanThuResponse chứa thông tin khoản thu đã tạo
+     */
     @Override
     public KhoanThuResponse create(KhoanThuRequest khoanThuRequest) {
         KhoanThu khoanThu = khoanThuMapper.toEntity(khoanThuRequest);
@@ -68,6 +81,13 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
         return khoanThuMapper.toRes(khoanThu);
     }
 
+    /**
+     * Thống kê khoản thu theo ngày cho một danh sách các khoản thu
+     * Gom nhóm các khoản thu theo ngày và tính toán các chỉ số thống kê
+     *
+     * @param khoanThus Danh sách các khoản thu cần thống kê
+     * @return Danh sách các báo cáo thống kê theo ngày, đã được sắp xếp theo thời gian
+     */
     public List<ThongKeTheoNgayResponse> thongKeThuByViTienTheoNgay(List<KhoanThu> khoanThus) {
 
         Map<LocalDate, List<KhoanThu>> groupedByDate = khoanThus.stream()
@@ -97,6 +117,15 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
     }
 
 
+    /**
+     * Thống kê khoản thu theo tháng cho một ví tiền cụ thể
+     * Tìm tất cả khoản thu trong tháng, sau đó tính toán các chỉ số thống kê
+     * và bao gồm cả thống kê chi tiết theo ngày
+     *
+     * @param viTienId ID của ví tiền cần thống kê
+     * @param thoiGian Tháng cần thống kê (dạng YearMonth)
+     * @return Báo cáo thống kê theo tháng hoặc null nếu không có khoản thu nào
+     */
     @Override
     public ThongKeTheoThangResponse<?> thongKeThuByViTienTheoThang(int viTienId, YearMonth thoiGian) {
         findBy.findViTienById(viTienId);
@@ -124,14 +153,27 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
                 .build();
     }
 
+    /**
+     * Thống kê khoản thu theo năm cho một ví tiền cụ thể
+     * Phân tích năm thành 12 tháng, thống kê từng tháng và tổng hợp kết quả
+     *
+     * @param viTienId ID của ví tiền cần thống kê
+     * @param thoiGian Năm cần thống kê (dạng Year)
+     * @return Báo cáo thống kê theo năm bao gồm các thống kê theo tháng
+     */
     @Override
     public ThongKeTheoNamResponse<?> thongKeThuByViTienTheoNam(int viTienId, Year thoiGian) {
 
+        // Chuyển đổi năm thành danh sách 12 tháng trong năm
         List<YearMonth> yearMonths = this.parseYearToYearMonths(thoiGian);
 
+        // Lấy thống kê cho mỗi tháng và lọc ra các tháng có dữ liệu
         List<ThongKeTheoThangResponse<?>> thongKeTheoThangResponses = this.parseToThongKeTheoThangResponses(viTienId, yearMonths);
 
-        DoubleSummaryStatistics doubleSummaryStatistics = thongKeTheoThangResponses.stream().mapToDouble(ThongKeTheoThangResponse::getTongThu).summaryStatistics();
+        // Tính toán thống kê tổng hợp cho cả năm
+        DoubleSummaryStatistics doubleSummaryStatistics = thongKeTheoThangResponses.stream()
+                .mapToDouble(ThongKeTheoThangResponse::getTongThu)
+                .summaryStatistics();
 
         return ThongKeTheoNamResponse.<ThongKeTheoThangResponse<?>>builder()
                 .thoiGian(thoiGian.toString())
@@ -143,26 +185,51 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
                 .build();
     }
 
+    /**
+     * Tính toán và cập nhật số dư của ví tiền khi thêm một khoản thu mới
+     * Số dư mới = Số dư cũ + Số tiền của khoản thu mới
+     *
+     * @param khoanThu Khoản thu cần tính toán và cập nhật số dư ví
+     */
     private void tinhSoDu(KhoanThu khoanThu) {
-
+        // Lấy số dư hiện tại và cộng thêm số tiền của khoản thu mới
         BigDecimal tongTien = khoanThu.getVt().getVtSodu().add(khoanThu.getKtSotien());
 
+        // Cập nhật số dư mới cho ví tiền
         khoanThu.getVt().setVtSodu(tongTien);
-
     }
 
+    /**
+     * Tìm tất cả khoản thu theo ví tiền và tháng cụ thể
+     *
+     * @param viTienId ID của ví tiền cần tìm
+     * @param thoiGian Tháng cần tìm (dạng YearMonth)
+     * @return Danh sách các khoản thu thỏa mãn điều kiện
+     */
     private List<KhoanThu> findKhoanThuTheoThang(Integer viTienId, YearMonth thoiGian) {
+        // Xác định ngày đầu tiên và ngày cuối cùng của tháng
         LocalDate startDate = thoiGian.atDay(1);
         LocalDate endDate = thoiGian.atEndOfMonth();
 
+        // Gọi repository để truy vấn dữ liệu
         return khoanThuRepository.findByVtAndThang(viTienId, startDate, endDate);
     }
 
+    /**
+     * Chuyển đổi danh sách các tháng thành danh sách các báo cáo thống kê theo tháng
+     * Xóa thông tin chi tiết theo ngày để giảm kích thước dữ liệu
+     *
+     * @param viTienId ID của ví tiền cần thống kê
+     * @param yearMonths Danh sách các tháng cần thống kê
+     * @return Danh sách các báo cáo thống kê theo tháng đã được làm gọn
+     */
     private List<ThongKeTheoThangResponse<?>> parseToThongKeTheoThangResponses(int viTienId, List<YearMonth> yearMonths) {
         List<ThongKeTheoThangResponse<?>> thongKeTheoThangResponses = new ArrayList<>();
         yearMonths.forEach(yearMonth -> {
+            // Lấy thông tin thống kê đầy đủ của một tháng
             ThongKeTheoThangResponse<?> fullThang = (this.thongKeThuByViTienTheoThang(viTienId, yearMonth));
             if (fullThang != null) {
+                // Chỉ giữ lại thông tin tổng hợp, loại bỏ chi tiết theo ngày để giảm kích thước dữ liệu
                 ThongKeTheoThangResponse<Void> cleaned = ThongKeTheoThangResponse.<Void>builder()
                         .thoiGian(fullThang.getThoiGian())
                         .tongThu(fullThang.getTongThu())
@@ -170,7 +237,7 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
                         .thuThapNhat(fullThang.getThuThapNhat())
                         .thuTrungBinh(fullThang.getThuTrungBinh())
                         .soGiaoDich(fullThang.getSoGiaoDich())
-                        .thongKeTheoNgays(null)
+                        .thongKeTheoNgays(null) // Loại bỏ dữ liệu chi tiết theo ngày
                         .build();
                 thongKeTheoThangResponses.add(cleaned);
             }
@@ -179,8 +246,14 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
         return thongKeTheoThangResponses;
     }
 
+    /**
+     * Chuyển đổi năm thành danh sách 12 tháng trong năm đó
+     *
+     * @param thoiGian Năm cần chuyển đổi
+     * @return Danh sách 12 tháng trong năm
+     */
     private List<YearMonth> parseYearToYearMonths(Year thoiGian) {
-
+        // Tạo danh sách các tháng từ 1 đến 12 của năm
         return IntStream.rangeClosed(1, 12)
                 .mapToObj(month -> YearMonth.of(thoiGian.getValue(), month))
                 .toList();
