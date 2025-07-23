@@ -82,7 +82,6 @@ mvn spring-boot:run
 - **Thống kê theo tháng**: Xem báo cáo tổng hợp thu chi theo tháng.
 - **Thống kê theo năm**: Xem báo cáo tổng quan thu chi theo năm.
 - **Thống kê theo ví tiền**: Xem chi tiết thu chi theo từng ví tiền.
-- **Biểu đồ trực quan**: Hiển thị dữ liệu thu chi dưới dạng biểu đồ để dễ dàng theo dõi.
 
 ### 💹 7. Phân tích tài chính
 - **Phân tích xu hướng chi tiêu**: Xem các xu hướng chi tiêu qua các thời kỳ.
