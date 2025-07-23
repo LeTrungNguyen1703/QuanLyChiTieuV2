@@ -1,11 +1,10 @@
 package com.example.quanlychitieuv2.service.impl;
 
-import ch.qos.logback.core.spi.LifeCycle;
+import com.example.quanlychitieuv2.dto.ThongKeTheoNamResponse;
 import com.example.quanlychitieuv2.dto.ThongKeTheoNgayResponse;
 import com.example.quanlychitieuv2.dto.ThongKeTheoThangResponse;
 import com.example.quanlychitieuv2.dto.request.KhoanThuRequest;
 import com.example.quanlychitieuv2.dto.response.KhoanThuResponse;
-import com.example.quanlychitieuv2.dto.response.LoaiKhoanThuResponse;
 import com.example.quanlychitieuv2.entity.*;
 import com.example.quanlychitieuv2.mapper.BaseMapper;
 import com.example.quanlychitieuv2.mapper.impl.KhoanThuMapper;
@@ -69,14 +68,6 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
         return khoanThuMapper.toRes(khoanThu);
     }
 
-    private void tinhSoDu(KhoanThu khoanThu) {
-
-        BigDecimal tongTien = khoanThu.getVt().getVtSodu().add(khoanThu.getKtSotien());
-
-        khoanThu.getVt().setVtSodu(tongTien);
-
-    }
-
     public List<ThongKeTheoNgayResponse> thongKeThuByViTienTheoNgay(List<KhoanThu> khoanThus) {
 
         Map<LocalDate, List<KhoanThu>> groupedByDate = khoanThus.stream()
@@ -87,29 +78,33 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
                     LocalDate date = entry.getKey();
                     List<KhoanThu> listInDay = entry.getValue();
 
-                    double tongTien = listInDay.stream()
+                    DoubleSummaryStatistics doubleSummaryStatistics = listInDay.stream()
                             .mapToDouble(kt -> kt.getKtSotien().doubleValue())
-                            .sum();
-
-                    int soGiaoDich = listInDay.size();
+                            .summaryStatistics();
 
                     return ThongKeTheoNgayResponse.builder()
-                            .tongThu(tongTien)
-                            .soGiaoDich(soGiaoDich)
+                            .tongThu(doubleSummaryStatistics.getSum())
+                            .thuCaoNhat(doubleSummaryStatistics.getMax())
+                            .thuTrungBinh(doubleSummaryStatistics.getAverage())
+                            .thuThapNhat(doubleSummaryStatistics.getMin())
+                            .soGiaoDich((int) doubleSummaryStatistics.getCount())
                             .thoiGian(date.toString())
                             .build();
+
                 })
                 .sorted(Comparator.comparing(ThongKeTheoNgayResponse::getThoiGian)) // Sắp xếp theo ngày tăng dần
                 .toList();
     }
 
-    ;
 
     @Override
-    public ThongKeTheoThangResponse thongKeThuByViTienTheoThang(int viTienId, YearMonth thoiGian) {
+    public ThongKeTheoThangResponse<?> thongKeThuByViTienTheoThang(int viTienId, YearMonth thoiGian) {
         findBy.findViTienById(viTienId);
 
         List<KhoanThu> khoanThus = this.findKhoanThuTheoThang(viTienId, thoiGian);
+        if (khoanThus.isEmpty()) {
+            return null;
+        }
 
         List<ThongKeTheoNgayResponse> thongKeTheoNgays = this.thongKeThuByViTienTheoNgay(khoanThus);
 
@@ -118,7 +113,7 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
                 .summaryStatistics();
 
 
-        return ThongKeTheoThangResponse.builder()
+        return ThongKeTheoThangResponse.<ThongKeTheoNgayResponse>builder()
                 .thoiGian(thoiGian.toString())
                 .tongThu(statistics.getSum())
                 .thuCaoNhat(statistics.getMax())
@@ -130,25 +125,64 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
     }
 
     @Override
-    public List<ThongKeTheoThangResponse> thongKeThuByViTienTheoNam(int viTienId, Year thoiGian) {
-        List<YearMonth> yearMonths = IntStream.rangeClosed(1, 12)
-                .mapToObj(month -> YearMonth.of(thoiGian.getValue(), month))
-                .toList();
+    public ThongKeTheoNamResponse<?> thongKeThuByViTienTheoNam(int viTienId, Year thoiGian) {
 
-        List<ThongKeTheoThangResponse> thongKeTheoThangResponses = new ArrayList<>();
+        List<YearMonth> yearMonths = this.parseYearToYearMonths(thoiGian);
 
+        List<ThongKeTheoThangResponse<?>> thongKeTheoThangResponses = this.parseToThongKeTheoThangResponses(viTienId, yearMonths);
 
-        yearMonths.forEach(yearMonth -> {
-            thongKeTheoThangResponses.add(this.thongKeThuByViTienTheoThang(viTienId, yearMonth));
-        });
-        return thongKeTheoThangResponses;
+        DoubleSummaryStatistics doubleSummaryStatistics = thongKeTheoThangResponses.stream().mapToDouble(ThongKeTheoThangResponse::getTongThu).summaryStatistics();
+
+        return ThongKeTheoNamResponse.<ThongKeTheoThangResponse<?>>builder()
+                .thoiGian(thoiGian.toString())
+                .tongThu(doubleSummaryStatistics.getSum())
+                .thuCaoNhat(doubleSummaryStatistics.getMax())
+                .thuTrungBinh(doubleSummaryStatistics.getAverage())
+                .thuThapNhat(doubleSummaryStatistics.getMin())
+                .thongKeTheoThangs(thongKeTheoThangResponses)
+                .build();
     }
 
+    private void tinhSoDu(KhoanThu khoanThu) {
+
+        BigDecimal tongTien = khoanThu.getVt().getVtSodu().add(khoanThu.getKtSotien());
+
+        khoanThu.getVt().setVtSodu(tongTien);
+
+    }
 
     private List<KhoanThu> findKhoanThuTheoThang(Integer viTienId, YearMonth thoiGian) {
         LocalDate startDate = thoiGian.atDay(1);
         LocalDate endDate = thoiGian.atEndOfMonth();
 
         return khoanThuRepository.findByVtAndThang(viTienId, startDate, endDate);
+    }
+
+    private List<ThongKeTheoThangResponse<?>> parseToThongKeTheoThangResponses(int viTienId, List<YearMonth> yearMonths) {
+        List<ThongKeTheoThangResponse<?>> thongKeTheoThangResponses = new ArrayList<>();
+        yearMonths.forEach(yearMonth -> {
+            ThongKeTheoThangResponse<?> fullThang = (this.thongKeThuByViTienTheoThang(viTienId, yearMonth));
+            if (fullThang != null) {
+                ThongKeTheoThangResponse<Void> cleaned = ThongKeTheoThangResponse.<Void>builder()
+                        .thoiGian(fullThang.getThoiGian())
+                        .tongThu(fullThang.getTongThu())
+                        .thuCaoNhat(fullThang.getThuCaoNhat())
+                        .thuThapNhat(fullThang.getThuThapNhat())
+                        .thuTrungBinh(fullThang.getThuTrungBinh())
+                        .soGiaoDich(fullThang.getSoGiaoDich())
+                        .thongKeTheoNgays(null)
+                        .build();
+                thongKeTheoThangResponses.add(cleaned);
+            }
+        });
+
+        return thongKeTheoThangResponses;
+    }
+
+    private List<YearMonth> parseYearToYearMonths(Year thoiGian) {
+
+        return IntStream.rangeClosed(1, 12)
+                .mapToObj(month -> YearMonth.of(thoiGian.getValue(), month))
+                .toList();
     }
 }

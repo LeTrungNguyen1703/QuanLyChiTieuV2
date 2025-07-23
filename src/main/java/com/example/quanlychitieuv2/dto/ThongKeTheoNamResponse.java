@@ -1,7 +1,6 @@
 package com.example.quanlychitieuv2.dto;
 
-import com.example.quanlychitieuv2.dto.response.KhoanThuResponse;
-import com.example.quanlychitieuv2.dto.response.LoaiKhoanThuResponse;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,14 +12,13 @@ import java.util.List;
 @Builder
 @Setter
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ThongKeTheoNgayResponse {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ThongKeTheoNamResponse<T> {
     String thoiGian;
     Double tongThu;
     Double thuCaoNhat;
     Double thuTrungBinh;
     Double thuThapNhat;
-    Integer soGiaoDich;
-
+    List<T> thongKeTheoThangs;
 }

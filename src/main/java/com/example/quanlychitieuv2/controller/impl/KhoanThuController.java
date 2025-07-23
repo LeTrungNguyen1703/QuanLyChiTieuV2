@@ -2,6 +2,7 @@ package com.example.quanlychitieuv2.controller.impl;
 
 import com.example.quanlychitieuv2.controller.AbstractBaseController;
 import com.example.quanlychitieuv2.dto.ApiResponseSuccess;
+import com.example.quanlychitieuv2.dto.ThongKeTheoNamResponse;
 import com.example.quanlychitieuv2.dto.ThongKeTheoThangResponse;
 import com.example.quanlychitieuv2.dto.request.KhoanThuRequest;
 import com.example.quanlychitieuv2.dto.response.KhoanThuResponse;
@@ -40,7 +41,7 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
             @RequestParam YearMonth thoiGian
             ) {
 
-        ThongKeTheoThangResponse thongKeTheoThangRespons = khoanThuServiceImpl.thongKeThuByViTienTheoThang(viTienId, thoiGian);
+        ThongKeTheoThangResponse<?> thongKeTheoThangRespons = khoanThuServiceImpl.thongKeThuByViTienTheoThang(viTienId, thoiGian);
         return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoThangRespons));
     }
 
@@ -50,7 +51,7 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
             @RequestParam Year thoiGian
     ) {
 
-        List<ThongKeTheoThangResponse> thongKeTheoThangRespons = khoanThuServiceImpl.thongKeThuByViTienTheoNam(viTienId, thoiGian);
+        ThongKeTheoNamResponse<?> thongKeTheoThangRespons = khoanThuServiceImpl.thongKeThuByViTienTheoNam(viTienId, thoiGian);
         return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoThangRespons));
     }
 

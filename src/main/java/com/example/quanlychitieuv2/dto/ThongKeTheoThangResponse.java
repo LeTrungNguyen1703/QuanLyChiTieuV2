@@ -2,6 +2,7 @@ package com.example.quanlychitieuv2.dto;
 
 import com.example.quanlychitieuv2.dto.response.KhoanThuResponse;
 import com.example.quanlychitieuv2.entity.KhoanThu;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,12 +14,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ThongKeTheoThangResponse {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ThongKeTheoThangResponse<T> {
     String thoiGian;
     Double tongThu;
     Double thuCaoNhat;
     Double thuTrungBinh;
     Double thuThapNhat;
     Integer soGiaoDich;
-    List<ThongKeTheoNgayResponse> thongKeTheoNgays;
+    List<T> thongKeTheoNgays;
 }
