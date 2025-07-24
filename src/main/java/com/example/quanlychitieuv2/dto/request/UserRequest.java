@@ -26,5 +26,4 @@ public class UserRequest implements Serializable {
     @Size(max = 255)
     private String ndMatkhau;
 
-    private List<String> danhSachQuyen;
 }

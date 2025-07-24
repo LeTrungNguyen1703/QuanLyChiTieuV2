@@ -25,6 +25,4 @@ public class UserResponse implements Serializable {
     @Size(max = 255)
     private final String ndEmail;
     private final LocalDate ndNgaytao;
-    private final List<String> danhSachQuyen;
-
 }

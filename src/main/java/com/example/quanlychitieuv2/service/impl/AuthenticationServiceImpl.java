@@ -7,6 +7,7 @@ import com.example.quanlychitieuv2.dto.response.Authentication.AuthenticationRes
 import com.example.quanlychitieuv2.dto.response.Authentication.IntrospectResponse;
 import com.example.quanlychitieuv2.entity.InvalidatedToken;
 import com.example.quanlychitieuv2.entity.Permission;
+import com.example.quanlychitieuv2.entity.SoHu;
 import com.example.quanlychitieuv2.entity.User;
 import com.example.quanlychitieuv2.enums.ErrorCode;
 import com.example.quanlychitieuv2.exception.AppException;
@@ -146,7 +147,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private String buildScope(User user) {
-        return user.getDanhSachQuyen().stream()
+        // Lấy danh sách các bản ghi SoHu mà người dùng là chủ ví
+        return user.getSoHusDuocCap().stream()
+                .filter(soHu -> soHu.getUserCapQuyenId() == null) // Người dùng là chủ ví
+                .map(SoHu::getRole)
+                .distinct()
                 .flatMap(role -> Stream.concat(
                         Stream.of("ROLE_" + role.getName()),
                         role.getPermissions().stream().map(Permission::getName)

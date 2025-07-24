@@ -19,12 +19,17 @@ import java.util.Objects;
 @NoArgsConstructor
 public class SoHuId implements Serializable {
     private static final long serialVersionUID = -3825352403975678533L;
+
     @NotNull
-    @Column(name = "USER_Id", nullable = false)
-    private Integer userId;
+    @Column(name = "NguoiDuocCapQuyen_Id", nullable = false)
+    private Integer userDuocCapId;
 
     @NotNull
     @Column(name = "VT_Id", nullable = false)
     private Integer vtId;
+
+    @NotNull
+    @Column(name = "Role_Id", nullable = false)
+    private String roleId;
 
 }

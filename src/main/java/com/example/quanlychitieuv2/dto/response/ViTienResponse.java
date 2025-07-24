@@ -16,8 +16,8 @@ public class ViTienResponse implements Serializable {
     private Integer id;
     private String tenVi;
     private BigDecimal vtSodu;
-    private LoaiViResponse loaiVi;
     private TrangThaiHoatDong trangThaiHoatDong;
+    private LoaiViResponse loaiVi;
     private ViTienResponse.UserResponse nguoiDung;
 
     @Getter

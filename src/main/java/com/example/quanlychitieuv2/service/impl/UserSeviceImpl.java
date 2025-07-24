@@ -56,28 +56,18 @@ public class UserSeviceImpl extends AbstractBaseService<UserRequest, UserRespons
 
         String passwordEncode = passwordEncoder.encode(userRequest.getNdMatkhau());
 
-        List<Role> roles = this.getRolesFromRequest(userRequest);
-
         User user = userMapper.toEntity(userRequest);
         user.setNdMatkhau(passwordEncode);
-        user.setDanhSachQuyen(new HashSet<>(roles));
-        user =  userRepository.save(user);
-        log.info("Creating userId: {} and userName {} ", user.getId(),user.getNdTen());
+
+        // Lưu user trước để có ID
+        user = userRepository.save(user);
+
+        log.info("Creating userId: {} and userName {} ", user.getId(), user.getNdTen());
+
+        // Lưu ý: Không cần thiết lập quyền cho user mới tạo ở đây
+        // Quyền sẽ được thiết lập khi người dùng tạo hoặc được cấp quyền với ví tiền thông qua bảng SoHu
+
         return userMapper.toRes(user);
-    }
-
-
-
-    private List<Role> getRolesFromRequest(UserRequest userRequest) {
-        List<Role> roles = roleRepository.findAllById(userRequest.getDanhSachQuyen());
-        if (roles.isEmpty()) {
-            Role role = findBy.findRoleById("ROLE_USER"); // Default role if none provided
-            roles.add(role);
-        }
-
-        log.info("Roles for user {}: {}", userRequest.getNdTen(), roles);
-
-        return roles;
     }
 
     private void checkUserExists(UserRequest userRequest) {

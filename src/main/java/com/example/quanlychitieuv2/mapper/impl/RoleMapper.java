@@ -15,7 +15,6 @@ public interface RoleMapper extends BaseMapper<RoleRequest, RoleResponse, Role> 
     @Override
 
     @Mapping(target = "permissions", ignore = true)
-    @Mapping(target = "users", ignore = true)
     Role updateEntity(RoleRequest roleRequest, @MappingTarget Role entity);
 
     @Override

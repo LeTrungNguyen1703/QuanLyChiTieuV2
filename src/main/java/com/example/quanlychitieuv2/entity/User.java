@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -44,19 +43,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Set<KhoanThu> khoanThus = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    private Set<SoHu> soHus = new LinkedHashSet<>();
-
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH
-    })
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> danhSachQuyen;
+    // Những ví mà người dùng được cấp quyền (người dùng này là userDuocCapQuyenId trong SoHu)
+    @OneToMany(mappedBy = "userDuocCapQuyenId", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private Set<SoHu> soHusDuocCap = new LinkedHashSet<>();
+    
+    // Những ví mà người dùng đã cấp quyền cho người khác (người dùng này là userCapQuyenId trong SoHu)
+    @OneToMany(mappedBy = "userCapQuyenId", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    private Set<SoHu> soHusDaCap = new LinkedHashSet<>();
 
     @PrePersist
     public void prePersist() {

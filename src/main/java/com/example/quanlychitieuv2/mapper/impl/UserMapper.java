@@ -19,16 +19,13 @@ import java.util.stream.Collectors;
 public interface UserMapper extends BaseMapper<UserRequest, UserResponse, User> {
 
     @Override
-    @Mapping(target = "danhSachQuyen", ignore = true)
     User toEntity(UserRequest userRequest);
 
     @Override
-    @Mapping(target = "danhSachQuyen", source = "danhSachQuyen", qualifiedByName = "toRoleResponseList")
     UserResponse toRes(User entity);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Override
-    @Mapping(target = "danhSachQuyen", ignore = true)
     User updateEntity(UserRequest userRequest, @MappingTarget User entity);
 
 
