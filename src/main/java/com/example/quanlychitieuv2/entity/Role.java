@@ -22,7 +22,7 @@ public class Role {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "role_permissions",
-        joinColumns = @JoinColumn(name = "role_id"))
+        joinColumns = @JoinColumn(name = "role_name"))
     @Column(name = "permission")
     Set<String> permissions = new HashSet<>();
 

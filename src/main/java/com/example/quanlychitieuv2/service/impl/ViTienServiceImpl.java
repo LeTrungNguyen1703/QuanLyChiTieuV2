@@ -4,6 +4,7 @@ import com.example.quanlychitieuv2.dto.request.ViTienDto;
 import com.example.quanlychitieuv2.dto.response.ViTienResponse;
 import com.example.quanlychitieuv2.entity.*;
 import com.example.quanlychitieuv2.enums.TrangThaiHoatDong;
+import com.example.quanlychitieuv2.exception.ResourceNotFound;
 import com.example.quanlychitieuv2.mapper.BaseMapper;
 import com.example.quanlychitieuv2.mapper.impl.ViTienMapper;
 import com.example.quanlychitieuv2.repository.RoleRepository;
@@ -12,14 +13,17 @@ import com.example.quanlychitieuv2.repository.ViTienRepository;
 import com.example.quanlychitieuv2.service.AbstractBaseService;
 import com.example.quanlychitieuv2.util.FindBy;
 import lombok.AccessLevel;
+import lombok.extern.slf4j.Slf4j;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class ViTienServiceImpl extends AbstractBaseService<ViTienDto, ViTienResponse, ViTien, Integer> {
     ViTienMapper viTienMapper;
     FindBy findBy;
@@ -56,21 +60,40 @@ public class ViTienServiceImpl extends AbstractBaseService<ViTienDto, ViTienResp
      *
      * @param viTienDto Đối tượng DTO chứa thông tin ví tiền cần tạo
      * @return ViTienResponse Đối tượng response chứa thông tin ví tiền đã tạo
-     * @throws RuntimeException Khi không tìm thấy vai trò OWNER trong hệ thống
+     * @throws ResourceNotFound Khi không tìm thấy vai trò OWNER trong hệ thống
      */
     @Override
+    @Transactional
     public ViTienResponse create(ViTienDto viTienDto) {
+        log.info("Bắt đầu tạo ví tiền mới với thông tin: {}", viTienDto);
 
+        // Lấy thông tin người dùng hiện tại
         User user = this.getUser();
+        log.info("Người dùng thực hiện tạo ví: {} (ID: {})", user.getNdTen(), user.getId());
 
+        // Tạo và lưu ví tiền mới
         ViTien viTien = this.createViTien(viTienDto);
+        log.info("Đã tạo ví tiền mới với ID: {}", viTien.getId());
 
         // Lấy quyền OWNER mặc định cho chủ ví tiền
         Role ownerRole = roleRepository.findById("OWNER")
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy vai trò OWNER"));
+                .orElseThrow(() -> {
+                    log.error("Không tìm thấy vai trò OWNER trong hệ thống");
+                    return new ResourceNotFound("Không tìm thấy vai trò OWNER");
+                });
+        log.info("Đã lấy vai trò OWNER: {}", ownerRole.getName());
+
+        // Kiểm tra để đảm bảo các giá trị đều không null trước khi tạo SoHuId
+        if (user.getId() == null || viTien.getId() == null || ownerRole.getName() == null) {
+            log.error("Lỗi: Thiếu thông tin cần thiết để tạo SoHuId - userId: {}, viTienId: {}, roleName={}",
+                    user.getId(), viTien.getId(), ownerRole.getName());
+            throw new IllegalStateException("Không thể tạo SoHuId do thiếu thông tin cần thiết");
+        }
 
         // Tạo SoHuId với đầy đủ thông tin
         SoHuId soHuId = new SoHuId(user.getId(), viTien.getId(), ownerRole.getName());
+        log.info("Đã tạo SoHuId: userId={}, viTienId={}, roleName={}",
+                soHuId.getUserDuocCapId(), soHuId.getVtId(), soHuId.getRoleId());
 
         // Tạo đối tượng SoHu với đầy đủ thông tin quan hệ
         SoHu soHu = SoHu.builder()
@@ -81,9 +104,11 @@ public class ViTienServiceImpl extends AbstractBaseService<ViTienDto, ViTienResp
                 .role(ownerRole)
                 .build();
 
-        soHuRepository.save(soHu);
+        // Lưu thông tin sở hữu
+        SoHu savedSoHu = soHuRepository.save(soHu);
+        log.info("Đã lưu thông tin sở hữu với roleId: {}", savedSoHu.getRole().getName());
 
-        // ViTienMapper.toRes sẽ tự động map thông tin người dùng, không cần gọi setNguoiDung nữa
+        // Trả về thông tin ví tiền
         return viTienMapper.toRes(viTien);
     }
 
