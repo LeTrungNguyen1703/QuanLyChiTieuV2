@@ -16,6 +16,8 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -48,6 +50,7 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
 
     /**
      * Lấy đối tượng Mapper để chuyển đổi giữa các lớp DTO và Entity
+     *
      * @return Mapper cho KhoanThu
      */
     @Override
@@ -57,6 +60,7 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
 
     /**
      * Tạo mới một khoản thu và cập nhật số dư ví tiền
+     *
      * @param khoanThuRequest Request chứa thông tin khoản thu cần tạo
      * @return KhoanThuResponse chứa thông tin khoản thu đã tạo
      */
@@ -64,7 +68,7 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
     public KhoanThuResponse create(KhoanThuRequest khoanThuRequest) {
         KhoanThu khoanThu = khoanThuMapper.toEntity(khoanThuRequest);
         ViTien viTien = findBy.findViTienById(khoanThuRequest.getVtId());
-        User user = findBy.findNguoiDungById(khoanThuRequest.getUserId());
+        User user = this.getCurrentUserByName();
         LoaiKhoanThu loaiKhoanThu = findBy.findLoaiKhoanThuById(khoanThuRequest.getLktId());
         Ngay ngay = new Ngay();
         ngay = findBy.findNgayByNgayDayDu(ngay.getNgayDaydu());
@@ -219,7 +223,7 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
      * Chuyển đổi danh sách các tháng thành danh sách các báo cáo thống kê theo tháng
      * Xóa thông tin chi tiết theo ngày để giảm kích thước dữ liệu
      *
-     * @param viTienId ID của ví tiền cần thống kê
+     * @param viTienId   ID của ví tiền cần thống kê
      * @param yearMonths Danh sách các tháng cần thống kê
      * @return Danh sách các báo cáo thống kê theo tháng đã được làm gọn
      */
@@ -257,5 +261,13 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
         return IntStream.rangeClosed(1, 12)
                 .mapToObj(month -> YearMonth.of(thoiGian.getValue(), month))
                 .toList();
+    }
+
+    private User getCurrentUserByName() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getName() != null) {
+            return findBy.findUserByName(authentication.getName());
+        }
+        return null;
     }
 }

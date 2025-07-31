@@ -16,7 +16,6 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class KhoanThuRequest implements Serializable {
-    private Integer userId;
     private Integer vtId;
     private Integer lktId;
     private String moTa;

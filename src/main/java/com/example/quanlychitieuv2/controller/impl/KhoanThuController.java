@@ -38,9 +38,8 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
     }
 
     @Override
-    @PreAuthorize("@walletSecurity.hasWalletPermission(#khoanThuRequest.vtId, @addTransaction)")
+    @PreAuthorize("@walletSecurity.hasWalletPermission(#khoanThuRequest.vtId, @addTransaction) and @walletSecurity.hasWalletAccess(#khoanThuRequest.vtId)")
     public ResponseEntity<ApiResponseSuccess<KhoanThuResponse>> create(KhoanThuRequest khoanThuRequest) {
-        log.info("Spring context {}", SecurityContextHolder.getContext().getAuthentication().getName());
         return super.create(khoanThuRequest);
     }
 

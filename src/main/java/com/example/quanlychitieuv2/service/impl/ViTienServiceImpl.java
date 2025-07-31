@@ -21,6 +21,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
@@ -50,7 +54,7 @@ public class ViTienServiceImpl extends AbstractBaseService<ViTienDto, ViTienResp
 
     /**
      * Tạo mới một ví tiền và thiết lập quyền sở hữu
-     *
+     * <p>
      * Phương thức này thực hiện các bước sau:
      * 1. Lấy thông tin người dùng hiện tại từ context bảo mật
      * 2. Tạo mới đối tượng ví tiền từ DTO đầu vào
@@ -107,8 +111,10 @@ public class ViTienServiceImpl extends AbstractBaseService<ViTienDto, ViTienResp
         // Lưu thông tin sở hữu
         SoHu savedSoHu = soHuRepository.save(soHu);
         log.info("Đã lưu thông tin sở hữu với roleId: {}", savedSoHu.getRole().getName());
-
         // Trả về thông tin ví tiền
+        var soHus = new HashSet<SoHu>();
+        soHus.add(savedSoHu);
+        viTien.setSoHus(soHus);
         return viTienMapper.toRes(viTien);
     }
 
