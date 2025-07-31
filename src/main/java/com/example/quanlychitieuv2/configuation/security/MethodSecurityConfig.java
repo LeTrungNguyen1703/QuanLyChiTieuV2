@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
  * cho việc phân quyền theo ví tiền
  */
 @Configuration
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class MethodSecurityConfig {
 
@@ -20,6 +20,7 @@ public class MethodSecurityConfig {
 
     @Bean
     public MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
-        return new WalletMethodSecurityExpressionHandler(walletPermissionService);
+        WalletMethodSecurityExpressionHandler expressionHandler = new WalletMethodSecurityExpressionHandler(walletPermissionService);
+        return expressionHandler;
     }
 }

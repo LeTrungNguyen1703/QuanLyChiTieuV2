@@ -2,8 +2,10 @@ package com.example.quanlychitieuv2.service.impl;
 
 import com.example.quanlychitieuv2.entity.Role;
 import com.example.quanlychitieuv2.entity.SoHu;
-import com.example.quanlychitieuv2.enums.OwnerPermisson;
+import com.example.quanlychitieuv2.entity.User;
+import com.example.quanlychitieuv2.enums.Permission;
 import com.example.quanlychitieuv2.repository.SoHuRepository;
+import com.example.quanlychitieuv2.repository.UserRepository;
 import com.example.quanlychitieuv2.service.WalletPermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,51 +23,64 @@ import java.util.Set;
 public class WalletPermissionServiceImpl implements WalletPermissionService {
 
     private final SoHuRepository soHuRepository;
+    private final UserRepository userRepository;
 
     /**
      * Kiểm tra xem người dùng có quyền truy cập vào ví tiền hay không
      *
-     * @param userId ID của người dùng
+     * @param username Tên người dùng
      * @param walletId ID của ví tiền
      * @return true nếu người dùng có quyền truy cập, ngược lại trả về false
      */
     @Override
-    public boolean hasAccess(Integer userId, Integer walletId) {
+    public boolean hasAccess(String username, Integer walletId) {
+        // Tìm user dựa trên username
+        User user = getUserByUsername(username);
+        if (user == null) {
+            return false;
+        }
+
         // Người dùng có quyền truy cập ví tiền nếu có bất kỳ bản ghi SoHu nào liên kết họ với ví tiền đó
-        return soHuRepository.existsByIdUserDuocCapIdAndIdVtId(userId, walletId);
+        return soHuRepository.existsByIdUserDuocCapIdAndIdVtId(user.getId(), walletId);
     }
 
     /**
      * Kiểm tra xem người dùng có quyền cụ thể đối với ví tiền hay không
      *
-     * @param userId ID của người dùng
+     * @param username Tên người dùng
      * @param walletId ID của ví tiền
      * @param permission Quyền cần kiểm tra
      * @return true nếu người dùng có quyền, ngược lại trả về false
      */
     @Override
-    public boolean hasPermission(Integer userId, Integer walletId, String permission) {
+    public boolean hasPermission(String username, Integer walletId, String permission) {
         // Nếu người dùng là chủ ví, họ có tất cả các quyền
-        if (isOwner(userId, walletId)) {
+        if (isOwner(username, walletId)) {
             return true;
         }
 
         // Kiểm tra xem người dùng có quyền cụ thể đối với ví tiền hay không
-        Set<String> permissions = getPermissions(userId, walletId);
+        Set<String> permissions = getPermissions(username, walletId);
         return permissions.contains(permission);
     }
 
     /**
      * Lấy tất cả các quyền của người dùng đối với ví tiền
      *
-     * @param userId ID của người dùng
+     * @param username Tên người dùng
      * @param walletId ID của ví tiền
      * @return Tập hợp các quyền của người dùng đối với ví tiền
      */
     @Override
-    public Set<String> getPermissions(Integer userId, Integer walletId) {
+    public Set<String> getPermissions(String username, Integer walletId) {
+        // Tìm user dựa trên username
+        User user = getUserByUsername(username);
+        if (user == null) {
+            return new HashSet<>();
+        }
+
         // Lấy bản ghi SoHu liên kết người dùng với ví tiền
-        Optional<SoHu> soHuOptional = soHuRepository.findByIdUserDuocCapIdAndIdVtId(userId, walletId);
+        Optional<SoHu> soHuOptional = soHuRepository.findByIdUserDuocCapIdAndIdVtId(user.getId(), walletId);
 
         if (soHuOptional.isEmpty()) {
             return new HashSet<>();
@@ -75,7 +90,7 @@ public class WalletPermissionServiceImpl implements WalletPermissionService {
         Role role = soHu.getRole();
 
         // Nếu người dùng là chủ ví, trả về tất cả các quyền có thể
-        if (isOwner(userId, walletId)) {
+        if (isOwner(username, walletId)) {
             return getAllPossiblePermissions();
         }
 
@@ -86,14 +101,20 @@ public class WalletPermissionServiceImpl implements WalletPermissionService {
     /**
      * Kiểm tra xem người dùng có phải là chủ ví hay không
      *
-     * @param userId ID của người dùng
+     * @param username Tên người dùng
      * @param walletId ID của ví tiền
      * @return true nếu người dùng là chủ ví, ngược lại trả về false
      */
     @Override
-    public boolean isOwner(Integer userId, Integer walletId) {
+    public boolean isOwner(String username, Integer walletId) {
+        // Tìm user dựa trên username
+        User user = getUserByUsername(username);
+        if (user == null) {
+            return false;
+        }
+
         // Người dùng là chủ ví nếu họ là người được cấp quyền và không có người cấp quyền (userCapQuyenId == null)
-        Optional<SoHu> soHuOptional = soHuRepository.findByIdUserDuocCapIdAndIdVtId(userId, walletId);
+        Optional<SoHu> soHuOptional = soHuRepository.findByIdUserDuocCapIdAndIdVtId(user.getId(), walletId);
         return soHuOptional.isPresent() && soHuOptional.get().getUserCapQuyenId() == null;
     }
 
@@ -103,6 +124,15 @@ public class WalletPermissionServiceImpl implements WalletPermissionService {
      */
     private Set<String> getAllPossiblePermissions() {
         // Sử dụng phương thức static từ enum OwnerPermisson
-        return OwnerPermisson.getAllPermissions();
+        return Permission.getAllPermissions();
+    }
+
+    /**
+     * Lấy thông tin người dùng từ tên đăng nhập
+     * @param username Tên đăng nhập của người dùng
+     * @return Đối tượng User nếu tìm thấy, null nếu không tìm thấy
+     */
+    private User getUserByUsername(String username) {
+        return userRepository.findByNdTen(username).orElse(null);
     }
 }

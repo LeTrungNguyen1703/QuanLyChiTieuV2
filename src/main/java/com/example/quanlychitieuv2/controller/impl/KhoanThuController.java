@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Year;
 import java.time.YearMonth;
-import java.util.List;
 
 @RestController
 @RequestMapping("/khoan-thu")
@@ -29,10 +29,15 @@ import java.util.List;
 public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, KhoanThuResponse, KhoanThu, Integer> {
 
     KhoanThuServiceImpl khoanThuServiceImpl;
-
     @Override
     protected AbstractBaseService<KhoanThuRequest, KhoanThuResponse, KhoanThu, Integer> abstractService() {
         return khoanThuServiceImpl;
+    }
+
+    @Override
+    @PreAuthorize("hasWalletPermission(#khoanThuRequest.vtId, 'ADD_TRANSACTION')")
+    public ResponseEntity<ApiResponseSuccess<KhoanThuResponse>> create(KhoanThuRequest khoanThuRequest) {
+        return super.create(khoanThuRequest);
     }
 
     @GetMapping("/thong-ke-theo-thang")

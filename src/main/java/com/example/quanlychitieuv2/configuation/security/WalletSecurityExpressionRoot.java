@@ -1,6 +1,8 @@
 package com.example.quanlychitieuv2.configuation.security;
 
+import com.example.quanlychitieuv2.enums.Permission;
 import com.example.quanlychitieuv2.service.WalletPermissionService;
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
@@ -11,12 +13,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * Lớp biểu thức bảo mật tùy chỉnh cho phép kiểm tra quyền truy cập vào ví tiền
  * Có thể sử dụng trong annotations @PreAuthorize và @PostAuthorize
  */
+@Getter
+@Setter
 public class WalletSecurityExpressionRoot extends SecurityExpressionRoot implements MethodSecurityExpressionOperations {
 
-    @Setter
     private Object filterObject;
-    @Setter
     private Object returnObject;
+    private Object target;
+
 
     private final WalletPermissionService walletPermissionService;
 
@@ -31,8 +35,8 @@ public class WalletSecurityExpressionRoot extends SecurityExpressionRoot impleme
      * @return true nếu có quyền, false nếu không có quyền
      */
     public boolean hasWalletAccess(Integer walletId) {
-        Integer currentUserId = getCurrentUserId();
-        return walletPermissionService.hasAccess(currentUserId, walletId);
+        String currentUsername = getCurrentUsername();
+        return walletPermissionService.hasAccess(currentUsername, walletId);
     }
 
     /**
@@ -42,8 +46,8 @@ public class WalletSecurityExpressionRoot extends SecurityExpressionRoot impleme
      * @return true nếu có quyền cụ thể, false nếu không có quyền
      */
     public boolean hasWalletPermission(Integer walletId, String permission) {
-        Integer currentUserId = getCurrentUserId();
-        return walletPermissionService.hasPermission(currentUserId, walletId, permission);
+        String currentUsername = getCurrentUsername();
+        return walletPermissionService.hasPermission(currentUsername, walletId, permission);
     }
 
     /**
@@ -52,20 +56,18 @@ public class WalletSecurityExpressionRoot extends SecurityExpressionRoot impleme
      * @return true nếu là chủ, false nếu không phải
      */
     public boolean isWalletOwner(Integer walletId) {
-        Integer currentUserId = getCurrentUserId();
-        return walletPermissionService.isOwner(currentUserId, walletId);
+        String currentUsername = getCurrentUsername();
+        return walletPermissionService.isOwner(currentUsername, walletId);
     }
 
     /**
-     * Lấy ID của người dùng hiện tại từ thông tin xác thực
-     * @return ID của người dùng hiện tại
+     * Lấy tên đăng nhập của người dùng hiện tại từ thông tin xác thực
+     * @return Tên đăng nhập của người dùng hiện tại
      */
-    private Integer getCurrentUserId() {
-        // Đây là cách đơn giản để lấy ID người dùng từ đối tượng xác thực
-        // Bạn có thể cần điều chỉnh tùy theo cách bạn lưu trữ thông tin người dùng trong đối tượng xác thực
+    private String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof Integer) {
-            return (Integer) authentication.getPrincipal();
+        if (authentication != null && authentication.getName() != null) {
+            return authentication.getName();
         }
         return null;
     }

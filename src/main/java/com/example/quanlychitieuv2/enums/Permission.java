@@ -3,6 +3,7 @@ package com.example.quanlychitieuv2.enums;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 import java.util.HashSet;
@@ -15,7 +16,8 @@ import java.util.Set;
 @Getter
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public enum OwnerPermisson {
+@ToString
+public enum Permission {
 
     VIEW_WALLET("VIEW_WALLET"),                     // Quyền xem ví tiền
     EDIT_WALLET("EDIT_WALLET"),                     // Quyền chỉnh sửa thông tin ví tiền
@@ -35,7 +37,7 @@ public enum OwnerPermisson {
      */
     public static Set<String> getAllPermissions() {
         Set<String> permissions = new HashSet<>();
-        for (OwnerPermisson permission : values()) {
+        for (Permission permission : values()) {
             permissions.add(permission.getValue());
         }
         return permissions;

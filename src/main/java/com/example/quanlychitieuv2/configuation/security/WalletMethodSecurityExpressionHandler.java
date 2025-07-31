@@ -19,6 +19,8 @@ public class WalletMethodSecurityExpressionHandler extends DefaultMethodSecurity
 
     public WalletMethodSecurityExpressionHandler(WalletPermissionService walletPermissionService) {
         this.walletPermissionService = walletPermissionService;
+        // Cần thiết lập việc sử dụng SpringEL parameter name discovery
+        setParameterNameDiscoverer(new org.springframework.security.core.parameters.DefaultSecurityParameterNameDiscoverer());
     }
 
     @Override

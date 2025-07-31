@@ -1,7 +1,7 @@
 package com.example.quanlychitieuv2.configuation;
 
 import com.example.quanlychitieuv2.entity.Role;
-import com.example.quanlychitieuv2.enums.OwnerPermisson;
+import com.example.quanlychitieuv2.enums.Permission;
 import com.example.quanlychitieuv2.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +55,7 @@ public class RoleInitializer implements ApplicationRunner {
             Role ownerRole = Role.builder()
                 .name("OWNER")
                 .description("Chủ sở hữu ví tiền với đầy đủ quyền")
-                .permissions(OwnerPermisson.getAllPermissions())
+                .permissions(Permission.getAllPermissions())
                 .build();
 
             roleRepository.save(ownerRole);
@@ -69,29 +69,20 @@ public class RoleInitializer implements ApplicationRunner {
      * Khởi tạo vai trò VIEWER chỉ có quyền xem
      */
     private void initViewerRole() {
-        try {
-            log.info("Bắt đầu khởi tạo vai trò VIEWER");
-            boolean exists = roleRepository.existsById("VIEWER");
-            log.info("Kiểm tra vai trò VIEWER tồn tại: {}", exists);
+        if (!roleRepository.existsById("VIEWER")) {
+            Set<String> viewerPermissions = new HashSet<>();
+            viewerPermissions.add(Permission.VIEW_WALLET.getValue());
 
-            if (!exists) {
-                Set<String> viewerPermissions = new HashSet<>();
-                viewerPermissions.add(OwnerPermisson.VIEW_WALLET.getValue());
+            Role viewerRole = Role.builder()
+                .name("VIEWER")
+                .description("Người xem, chỉ có quyền xem ví tiền")
+                .permissions(viewerPermissions)
+                .build();
 
-                Role viewerRole = Role.builder()
-                    .name("VIEWER")
-                    .description("Người xem, chỉ có quyền xem ví tiền")
-                    .permissions(viewerPermissions)
-                    .build();
-
-                Role savedRole = roleRepository.save(viewerRole);
-                log.info("Đã tạo vai trò VIEWER với {} quyền, id: {}", savedRole.getPermissions().size(), savedRole.getName());
-            } else {
-                log.info("Vai trò VIEWER đã tồn tại");
-            }
-        } catch (Exception e) {
-            log.error("Lỗi khi khởi tạo vai trò VIEWER: {}", e.getMessage(), e);
-            // Tiếp tục xử lý để không làm gián đoạn việc khởi tạo các vai trò khác
+            roleRepository.save(viewerRole);
+            log.info("Đã tạo vai trò VIEWER với {} quyền", viewerRole.getPermissions().size());
+        } else {
+            log.info("Vai trò VIEWER đã tồn tại");
         }
     }
 
@@ -101,8 +92,8 @@ public class RoleInitializer implements ApplicationRunner {
     private void initContributorRole() {
         if (!roleRepository.existsById("CONTRIBUTOR")) {
             Set<String> contributorPermissions = new HashSet<>();
-            contributorPermissions.add(OwnerPermisson.VIEW_WALLET.getValue());
-            contributorPermissions.add(OwnerPermisson.ADD_TRANSACTION.getValue());
+            contributorPermissions.add(Permission.VIEW_WALLET.getValue());
+            contributorPermissions.add(Permission.ADD_TRANSACTION.getValue());
 
             Role contributorRole = Role.builder()
                 .name("CONTRIBUTOR")
@@ -123,11 +114,11 @@ public class RoleInitializer implements ApplicationRunner {
     private void initManagerRole() {
         if (!roleRepository.existsById("MANAGER")) {
             Set<String> managerPermissions = new HashSet<>();
-            managerPermissions.add(OwnerPermisson.VIEW_WALLET.getValue());
-            managerPermissions.add(OwnerPermisson.EDIT_WALLET.getValue());
-            managerPermissions.add(OwnerPermisson.ADD_TRANSACTION.getValue());
-            managerPermissions.add(OwnerPermisson.EDIT_TRANSACTION.getValue());
-            managerPermissions.add(OwnerPermisson.DELETE_TRANSACTION.getValue());
+            managerPermissions.add(Permission.VIEW_WALLET.getValue());
+            managerPermissions.add(Permission.EDIT_WALLET.getValue());
+            managerPermissions.add(Permission.ADD_TRANSACTION.getValue());
+            managerPermissions.add(Permission.EDIT_TRANSACTION.getValue());
+            managerPermissions.add(Permission.DELETE_TRANSACTION.getValue());
 
             Role managerRole = Role.builder()
                 .name("MANAGER")
