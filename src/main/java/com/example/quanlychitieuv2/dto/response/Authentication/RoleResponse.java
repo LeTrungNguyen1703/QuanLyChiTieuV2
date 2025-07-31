@@ -1,6 +1,5 @@
 package com.example.quanlychitieuv2.dto.response.Authentication;
 
-import com.example.quanlychitieuv2.entity.Permission;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +15,6 @@ import java.util.Set;
 public class RoleResponse {
     String name;
     String description;
-    Set<Permission> permissions;
+    Set<String> permissions;
 
 }

@@ -28,7 +28,6 @@ public class FindByImpl implements FindBy {
     SoHuRepository soHuRepository;
     LoaiKhoanChiRepository loaiKhoanChiRepository;
     RoleRepository roleRepository;
-    PermissionRepository permissionRepository;
     private final NgayRepository ngayRepository;
 
 
@@ -208,24 +207,6 @@ public class FindByImpl implements FindBy {
             throw ex;
         } catch (Exception ex) {
             log.error("Lỗi khi tìm ví tiền với ID: {}", id, ex);
-            throw ex;
-        }
-    }
-
-    @Override
-    public Permission findPermissionById(String id) {
-        log.info("Tìm permission với ID: {}", id);
-        String ErrorMessage = ErrorCode.NOT_FOUND.getMessage() + " với ID: " + id;
-        try {
-            Permission permission = permissionRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFound(ErrorMessage));
-            log.info("Đã tìm thấy permission: {}", permission);
-            return permission;
-        } catch (ResourceNotFound ex) {
-            log.error("Không tìm thấy permission với ID: {}", id);
-            throw ex;
-        } catch (Exception ex) {
-            log.error("Lỗi khi tìm permission với ID: {}", id, ex);
             throw ex;
         }
     }

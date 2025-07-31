@@ -6,7 +6,6 @@ import com.example.quanlychitieuv2.dto.request.Authentication.LogoutRequest;
 import com.example.quanlychitieuv2.dto.response.Authentication.AuthenticationResponse;
 import com.example.quanlychitieuv2.dto.response.Authentication.IntrospectResponse;
 import com.example.quanlychitieuv2.entity.InvalidatedToken;
-import com.example.quanlychitieuv2.entity.Permission;
 import com.example.quanlychitieuv2.entity.SoHu;
 import com.example.quanlychitieuv2.entity.User;
 import com.example.quanlychitieuv2.enums.ErrorCode;
@@ -146,6 +145,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
+    /**
+     * Xây dựng phạm vi quyền cho người dùng dựa trên các vai trò của họ
+     *
+     * @param user Người dùng cần xây dựng phạm vi quyền
+     * @return Chuỗi chứa danh sách quyền của người dùng
+     */
     private String buildScope(User user) {
         // Lấy danh sách các bản ghi SoHu mà người dùng là chủ ví
         return user.getSoHusDuocCap().stream()
@@ -154,7 +159,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .distinct()
                 .flatMap(role -> Stream.concat(
                         Stream.of("ROLE_" + role.getName()),
-                        role.getPermissions().stream().map(Permission::getName)
+                        role.getPermissions().stream() // Sử dụng trực tiếp danh sách quyền từ Role
                 ))
                 .collect(Collectors.joining(" "));
     }

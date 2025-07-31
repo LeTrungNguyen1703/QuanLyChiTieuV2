@@ -20,10 +20,12 @@ public class Role {
     String name;
     String description;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    Set<Permission> permissions;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "role_permissions",
+        joinColumns = @JoinColumn(name = "role_id"))
+    @Column(name = "permission")
+    Set<String> permissions = new HashSet<>();
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<SoHu> soHus = new LinkedHashSet<>();
-
 }

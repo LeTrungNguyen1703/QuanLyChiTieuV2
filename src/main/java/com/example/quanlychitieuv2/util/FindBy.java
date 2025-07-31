@@ -16,7 +16,6 @@ public interface FindBy {
     PhuongThucThanhToan findPhuongThucThanhToanById(Integer id);
     SoHu findSoHuById(SoHuId id);
     ViTien findViTienById(Integer id);
-    Permission findPermissionById(String id);
     Role findRoleById(String id);
     User findUserByName(String username);
     Ngay findNgayByNgayDayDu(LocalDate localDate);
