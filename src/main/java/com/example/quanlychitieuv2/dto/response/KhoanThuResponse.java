@@ -16,18 +16,19 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 public class KhoanThuResponse implements Serializable {
-    private final Integer id;
+    private Integer id;
     private String moTa;
     private String tenKhoanThu;
-    private final BigDecimal ktSotien;
+    private BigDecimal ktSotien;
     @NotNull
-    private final KhoanThuResponse.UserDto user;
+    private KhoanThuResponse.UserDto user;
     @NotNull
-    private final KhoanThuResponse.NgayDto ngay;
+    private KhoanThuResponse.NgayDto ngay;
     @NotNull
-    private final KhoanThuResponse.ViTienDto vt;
+    private KhoanThuResponse.ViTienDto vt;
     @NotNull
-    private final KhoanThuResponse.LoaiKhoanThuDto lkt;
+    private KhoanThuResponse.LoaiKhoanThuDto lkt;
+
     @NotNull
 
     /**

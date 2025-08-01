@@ -33,8 +33,7 @@ public class KhoanChi {
     @Column(name = "KC_LapLai", nullable = false)
     private Boolean kcLaplai = false;
 
-    @NotNull
-    @Column(name = "KC_NgayKetThucLapLai", nullable = false)
+    @Column(name = "KC_NgayKetThucLapLai")
     private LocalDate kcNgayketthuclaplai;
 
     @NotNull
@@ -45,9 +44,9 @@ public class KhoanChi {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "VT_Id", nullable = false)
+    @NotNull
     private ViTien vt;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Ngay_Id", nullable = false)
     private Ngay ngay;

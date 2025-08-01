@@ -1,0 +1,234 @@
+{
+  "info": {
+    "_postman_id": "e4387a9c-5d18-4c2d-8f65-b67a4e8f52d1",
+    "name": "KhoanChi API",
+    "description": "API Collection cho Khoản Chi",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create KhoanChi",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "description": "JWT token for authentication"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/khoan-chi",
+          "host": ["{{base_url}}"],
+          "path": ["khoan-chi"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"kcTen\": \"Tiền ăn uống\",\n  \"kcSotien\": 500000,\n  \"kcMota\": \"Chi phí ăn uống tháng 7/2025\",\n  \"kcLaplai\": false,\n  \"kcNgayketthuclaplai\": \"2025-08-01\",\n  \"lkcId\": 1,\n  \"vtId\": 1,\n  \"ptttId\": 1\n}"
+        },
+        "description": "Tạo mới khoản chi"
+      },
+      "response": []
+    },
+    {
+      "name": "Get All KhoanChi",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "description": "JWT token for authentication"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/khoan-chi",
+          "host": ["{{base_url}}"],
+          "path": ["khoan-chi"]
+        },
+        "description": "Lấy danh sách tất cả khoản chi"
+      },
+      "response": []
+    },
+    {
+      "name": "Get KhoanChi By ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "description": "JWT token for authentication"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/khoan-chi/get-by-id/1",
+          "host": ["{{base_url}}"],
+          "path": [
+            "khoan-chi",
+            "get-by-id",
+            "1"
+          ]
+        },
+        "description": "Lấy khoản chi theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Update KhoanChi",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "description": "JWT token for authentication"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/khoan-chi/1",
+          "host": ["{{base_url}}"],
+          "path": ["khoan-chi", "1"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"kcTen\": \"Tiền ăn uống\",\n  \"kcSotien\": 600000,\n  \"kcMota\": \"Chi phí ăn uống tháng 7/2025 đã cập nhật\",\n  \"kcLaplai\": false,\n  \"kcNgayketthuclaplai\": \"2025-08-01\",\n  \"lkcId\": 1,\n  \"vtId\": 1,\n  \"ptttId\": 1\n}"
+        },
+        "description": "Cập nhật khoản chi theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Delete KhoanChi",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "description": "JWT token for authentication"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/khoan-chi/1",
+          "host": ["{{base_url}}"],
+          "path": ["khoan-chi", "1"]
+        },
+        "description": "Xóa khoản chi theo ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Thống kê theo tháng",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "description": "JWT token for authentication"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/khoan-chi/thong-ke-theo-thang?viTienId=1&thoiGian=2025-07",
+          "host": ["{{base_url}}"],
+          "path": ["khoan-chi", "thong-ke-theo-thang"],
+          "query": [
+            {
+              "key": "viTienId",
+              "value": "1"
+            },
+            {
+              "key": "thoiGian",
+              "value": "2025-07"
+            }
+          ]
+        },
+        "description": "Thống kê khoản chi theo tháng"
+      },
+      "response": []
+    },
+    {
+      "name": "Thống kê theo năm",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "description": "JWT token for authentication"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/khoan-chi/thong-ke-theo-nam?viTienId=1&thoiGian=2025",
+          "host": ["{{base_url}}"],
+          "path": ["khoan-chi", "thong-ke-theo-nam"],
+          "query": [
+            {
+              "key": "viTienId",
+              "value": "1"
+            },
+            {
+              "key": "thoiGian",
+              "value": "2025"
+            }
+          ]
+        },
+        "description": "Thống kê khoản chi theo năm"
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token for authentication"
+    }
+  ]
+}
+

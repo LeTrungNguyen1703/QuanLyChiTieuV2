@@ -1,14 +1,15 @@
 package com.example.quanlychitieuv2.service.impl;
 
+import com.example.quanlychitieuv2.dto.request.KhoanChiRequest;
+import com.example.quanlychitieuv2.dto.response.KhoanChiResponse;
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoNamResponse;
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoNgayResponse;
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoThangResponse;
-import com.example.quanlychitieuv2.dto.request.KhoanThuRequest;
-import com.example.quanlychitieuv2.dto.response.KhoanThuResponse;
 import com.example.quanlychitieuv2.entity.*;
 import com.example.quanlychitieuv2.enums.LoaiGiaoDich;
 import com.example.quanlychitieuv2.mapper.BaseMapper;
-import com.example.quanlychitieuv2.mapper.impl.KhoanThuMapper;
+import com.example.quanlychitieuv2.mapper.impl.KhoanChiMapper;
+import com.example.quanlychitieuv2.repository.KhoanChiRepository;
 import com.example.quanlychitieuv2.repository.KhoanThuRepository;
 import com.example.quanlychitieuv2.service.AbstractBaseService;
 import com.example.quanlychitieuv2.service.ThongKeThuChiByViTien;
@@ -36,17 +37,17 @@ import java.util.stream.IntStream;
 @Service
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, KhoanThuResponse, KhoanThu, Integer> implements ThongKeThuChiByViTien {
+public class KhoanChiServiceImpl extends AbstractBaseService<KhoanChiRequest, KhoanChiResponse, KhoanChi, Integer> implements ThongKeThuChiByViTien {
 
-    KhoanThuRepository khoanThuRepository;
-    KhoanThuMapper khoanThuMapper;
+    KhoanChiMapper khoanChiMapper;
     FindBy findBy;
+    private final KhoanChiRepository khoanChiRepository;
 
-    public KhoanThuServiceImpl(JpaRepository<KhoanThu, Integer> jpaRepository, KhoanThuRepository khoanThuRepository, KhoanThuMapper khoanThuMapper, FindBy findBy) {
+    public KhoanChiServiceImpl(JpaRepository<KhoanChi, Integer> jpaRepository, KhoanThuRepository khoanThuRepository, KhoanChiMapper khoanChiMapper, FindBy findBy, KhoanChiRepository khoanChiRepository) {
         super(jpaRepository);
-        this.khoanThuRepository = khoanThuRepository;
-        this.khoanThuMapper = khoanThuMapper;
+        this.khoanChiMapper = khoanChiMapper;
         this.findBy = findBy;
+        this.khoanChiRepository = khoanChiRepository;
     }
 
     /**
@@ -55,56 +56,60 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
      * @return Mapper cho KhoanThu
      */
     @Override
-    protected BaseMapper<KhoanThuRequest, KhoanThuResponse, KhoanThu> getMapper() {
-        return khoanThuMapper;
+    protected BaseMapper<KhoanChiRequest, KhoanChiResponse, KhoanChi> getMapper() {
+        return khoanChiMapper;
     }
 
     /**
-     * Tạo mới một khoản thu và cập nhật số dư ví tiền
+     * Tạo mới một khoản chi và cập nhật số dư ví tiền
      *
-     * @param khoanThuRequest Request chứa thông tin khoản thu cần tạo
-     * @return KhoanThuResponse chứa thông tin khoản thu đã tạo
+     * @param khoanChiRequest Request chứa thông tin khoản thu cần tạo
+     * @return khoanChiResponse chứa thông tin khoản chi đã tạo
      */
     @Override
-    public KhoanThuResponse create(KhoanThuRequest khoanThuRequest) {
-        KhoanThu khoanThu = khoanThuMapper.toEntity(khoanThuRequest);
-        ViTien viTien = findBy.findViTienById(khoanThuRequest.getVtId());
+    public KhoanChiResponse create(KhoanChiRequest khoanChiRequest) {
+        log.info("Khoan chi request {}", khoanChiRequest);
         User user = this.getCurrentUserByName();
-        LoaiKhoanThu loaiKhoanThu = findBy.findLoaiKhoanThuById(khoanThuRequest.getLktId());
+        ViTien viTien = findBy.findViTienById(khoanChiRequest.getVtId());
         Ngay ngay = new Ngay();
         ngay = findBy.findNgayByNgayDayDu(ngay.getNgayDaydu());
+        LoaiKhoanChi loaiKhoanChi = findBy.findLoaiKhoanChiById(khoanChiRequest.getLkcId());
+        PhuongThucThanhToan phuongThucThanhToan = findBy.findPhuongThucThanhToanById(khoanChiRequest.getPtttId());
+        KhoanChi khoanChi = khoanChiMapper.toEntity(khoanChiRequest);
 
-        khoanThu.setVt(viTien);
-        khoanThu.setUser(user);
-        khoanThu.setLkt(loaiKhoanThu);
-        khoanThu.setNgay(ngay);
+        khoanChi.setUser(user);
+        khoanChi.setVt(viTien);
+        khoanChi.setNgay(ngay);
+        khoanChi.setLkc(loaiKhoanChi);
+        khoanChi.setPttt(phuongThucThanhToan);
+        this.tinhSoDu(khoanChi);
 
-        this.tinhSoDu(khoanThu);
+        log.info("Khoan chi sau khi map {}", khoanChi);
 
-        khoanThu = khoanThuRepository.save(khoanThu);
+        khoanChi = jpaRepository.save(khoanChi);
 
-        return khoanThuMapper.toRes(khoanThu);
+        return khoanChiMapper.toRes(khoanChi);
     }
 
     /**
-     * Thống kê khoản thu theo ngày cho một danh sách các khoản thu
-     * Gom nhóm các khoản thu theo ngày và tính toán các chỉ số thống kê
+     * Thống kê khoản chi theo ngày cho một danh sách các khoản chi
+     * Gom nhóm các khoản chi theo ngày và tính toán các chỉ số thống kê
      *
-     * @param khoanThus Danh sách các khoản thu cần thống kê
+     * @param khoanChis Danh sách các khoản chi cần thống kê
      * @return Danh sách các báo cáo thống kê theo ngày, đã được sắp xếp theo thời gian
      */
-    public List<ThongKeTheoNgayResponse> thongKeThuByViTienTheoNgay(List<KhoanThu> khoanThus) {
+    public List<ThongKeTheoNgayResponse> thongKeChiByViTienTheoNgay(List<KhoanChi> khoanChis) {
 
-        Map<LocalDate, List<KhoanThu>> groupedByDate = khoanThus.stream()
-                .collect(Collectors.groupingBy(khoanThu -> khoanThu.getNgay().getNgayDaydu()));
+        Map<LocalDate, List<KhoanChi>> groupedByDate = khoanChis.stream()
+                .collect(Collectors.groupingBy(khoanChi -> khoanChi.getNgay().getNgayDaydu()));
 
         return groupedByDate.entrySet().stream()
                 .map(entry -> {
                     LocalDate date = entry.getKey();
-                    List<KhoanThu> listInDay = entry.getValue();
+                    List<KhoanChi> listInDay = entry.getValue();
 
                     DoubleSummaryStatistics doubleSummaryStatistics = listInDay.stream()
-                            .mapToDouble(kt -> kt.getKtSotien().doubleValue())
+                            .mapToDouble(kc -> kc.getKcSotien().doubleValue())
                             .summaryStatistics();
 
                     return ThongKeTheoNgayResponse.builder()
@@ -114,7 +119,7 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
                             .soTienThapNhat(doubleSummaryStatistics.getMin())
                             .soGiaoDich((int) doubleSummaryStatistics.getCount())
                             .thoiGian(date.toString())
-                            .loaiGiaoDich(LoaiGiaoDich.THU)
+                            .loaiGiaoDich(LoaiGiaoDich.CHI)
                             .build();
 
                 })
@@ -136,15 +141,19 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
     public ThongKeTheoThangResponse<?> thongKeByViTienTheoThang(int viTienId, YearMonth thoiGian) {
         findBy.findViTienById(viTienId);
 
-        List<KhoanThu> khoanThus = this.findKhoanThuTheoThang(viTienId, thoiGian);
-        if (khoanThus.isEmpty()) {
+        List<KhoanChi> khoanChis = this.findKhoanChiTheoThang(viTienId, thoiGian);
+        if (khoanChis.isEmpty()) {
             return null;
         }
 
-        List<ThongKeTheoNgayResponse> thongKeTheoNgays = this.thongKeThuByViTienTheoNgay(khoanThus);
+        List<ThongKeTheoNgayResponse> thongKeTheoNgays = this.thongKeChiByViTienTheoNgay(khoanChis);
 
-        DoubleSummaryStatistics statistics = khoanThus.stream()
-                .mapToDouble(khoanThu -> khoanThu.getKtSotien().doubleValue())
+        thongKeTheoNgays.forEach(thongKeTheoNgay -> {
+            thongKeTheoNgay.setLoaiGiaoDich(null);
+        });
+
+        DoubleSummaryStatistics statistics = khoanChis.stream()
+                .mapToDouble(khoanChi -> khoanChi.getKcSotien().doubleValue())
                 .summaryStatistics();
 
 
@@ -156,7 +165,7 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
                 .soTienTrungBinh(statistics.getAverage())
                 .soGiaoDich((int) statistics.getCount())
                 .thongKeTheoNgays(thongKeTheoNgays)
-                .loaiGiaoDich(LoaiGiaoDich.THU)
+                .loaiGiaoDich(LoaiGiaoDich.CHI)
                 .build();
     }
 
@@ -189,22 +198,22 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
                 .soTienTrungBinh(doubleSummaryStatistics.getAverage())
                 .soTienThapNhat(doubleSummaryStatistics.getMin())
                 .thongKeTheoThangs(thongKeTheoThangResponses)
-                .loaiGiaoDich(LoaiGiaoDich.THU)
+                .loaiGiaoDich(LoaiGiaoDich.CHI)
                 .build();
     }
 
     /**
-     * Tính toán và cập nhật số dư của ví tiền khi thêm một khoản thu mới
-     * Số dư mới = Số dư cũ + Số tiền của khoản thu mới
+     * Tính toán và cập nhật số dư của ví tiền khi thêm một khoản chi mới
+     * Số dư mới = Số dư cũ - Số tiền của khoản chi mới
      *
-     * @param khoanThu Khoản thu cần tính toán và cập nhật số dư ví
+     * @param khoanChi Khoản chi cần tính toán và cập nhật số dư ví
      */
-    private void tinhSoDu(KhoanThu khoanThu) {
-        // Lấy số dư hiện tại và cộng thêm số tiền của khoản thu mới
-        BigDecimal tongTien = khoanThu.getVt().getVtSodu().add(khoanThu.getKtSotien());
+    private void tinhSoDu(KhoanChi khoanChi) {
+        // Lấy số dư hiện tại và trừ thêm số tiền của khoản thu mới
+        BigDecimal tongTien = khoanChi.getVt().getVtSodu().subtract(khoanChi.getKcSotien());
 
         // Cập nhật số dư mới cho ví tiền
-        khoanThu.getVt().setVtSodu(tongTien);
+        khoanChi.getVt().setVtSodu(tongTien);
     }
 
     /**
@@ -214,13 +223,13 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
      * @param thoiGian Tháng cần tìm (dạng YearMonth)
      * @return Danh sách các khoản thu thỏa mãn điều kiện
      */
-    private List<KhoanThu> findKhoanThuTheoThang(Integer viTienId, YearMonth thoiGian) {
+    private List<KhoanChi> findKhoanChiTheoThang(Integer viTienId, YearMonth thoiGian) {
         // Xác định ngày đầu tiên và ngày cuối cùng của tháng
         LocalDate startDate = thoiGian.atDay(1);
         LocalDate endDate = thoiGian.atEndOfMonth();
 
         // Gọi repository để truy vấn dữ liệu
-        return khoanThuRepository.findByVtAndThang(viTienId, startDate, endDate);
+        return khoanChiRepository.findByVtAndThang(viTienId, startDate, endDate);
     }
 
     /**

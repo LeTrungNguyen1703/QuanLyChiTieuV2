@@ -2,12 +2,16 @@ package com.example.quanlychitieuv2.controller.impl;
 
 import com.example.quanlychitieuv2.controller.AbstractBaseController;
 import com.example.quanlychitieuv2.dto.ApiResponseSuccess;
+import com.example.quanlychitieuv2.dto.request.KhoanChiRequest;
+import com.example.quanlychitieuv2.dto.request.KhoanThuRequest;
+import com.example.quanlychitieuv2.dto.response.KhoanChiResponse;
+import com.example.quanlychitieuv2.dto.response.KhoanThuResponse;
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoNamResponse;
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoThangResponse;
-import com.example.quanlychitieuv2.dto.request.KhoanThuRequest;
-import com.example.quanlychitieuv2.dto.response.KhoanThuResponse;
+import com.example.quanlychitieuv2.entity.KhoanChi;
 import com.example.quanlychitieuv2.entity.KhoanThu;
 import com.example.quanlychitieuv2.service.AbstractBaseService;
+import com.example.quanlychitieuv2.service.impl.KhoanChiServiceImpl;
 import com.example.quanlychitieuv2.service.impl.KhoanThuServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,22 +28,22 @@ import java.time.Year;
 import java.time.YearMonth;
 
 @RestController
-@RequestMapping("/khoan-thu")
+@RequestMapping("/khoan-chi")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, KhoanThuResponse, KhoanThu, Integer> {
+public class KhoanChiController extends AbstractBaseController<KhoanChiRequest, KhoanChiResponse, KhoanChi, Integer> {
 
-    KhoanThuServiceImpl khoanThuServiceImpl;
+    KhoanChiServiceImpl khoanChiServiceImpl;
     @Override
-    protected AbstractBaseService<KhoanThuRequest, KhoanThuResponse, KhoanThu, Integer> abstractService() {
-        return khoanThuServiceImpl;
+    protected AbstractBaseService<KhoanChiRequest, KhoanChiResponse, KhoanChi, Integer> abstractService() {
+        return khoanChiServiceImpl;
     }
 
     @Override
-    @PreAuthorize("@walletSecurity.hasWalletPermission(#khoanThuRequest.vtId, @addTransaction) and @walletSecurity.hasWalletAccess(#khoanThuRequest.vtId)")
-    public ResponseEntity<ApiResponseSuccess<KhoanThuResponse>> create(KhoanThuRequest khoanThuRequest) {
-        return super.create(khoanThuRequest);
+    @PreAuthorize("@walletSecurity.hasWalletPermission(#khoanChiRequest.vtId, @addTransaction) and @walletSecurity.hasWalletAccess(#khoanChiRequest.vtId)")
+    public ResponseEntity<ApiResponseSuccess<KhoanChiResponse>> create(KhoanChiRequest khoanChiRequest) {
+        return super.create(khoanChiRequest);
     }
 
     @GetMapping("/thong-ke-theo-thang")
@@ -48,7 +52,7 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
             @RequestParam YearMonth thoiGian
             ) {
 
-        ThongKeTheoThangResponse<?> thongKeTheoThangRespons = khoanThuServiceImpl.thongKeByViTienTheoThang(viTienId, thoiGian);
+        ThongKeTheoThangResponse<?> thongKeTheoThangRespons = khoanChiServiceImpl.thongKeByViTienTheoThang(viTienId, thoiGian);
         return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoThangRespons));
     }
 
@@ -58,7 +62,7 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
             @RequestParam Year thoiGian
     ) {
 
-        ThongKeTheoNamResponse<?> thongKeTheoThangRespons = khoanThuServiceImpl.thongKeByViTienTheoNam(viTienId, thoiGian);
+        ThongKeTheoNamResponse<?> thongKeTheoThangRespons = khoanChiServiceImpl.thongKeByViTienTheoNam(viTienId, thoiGian);
         return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoThangRespons));
     }
 
