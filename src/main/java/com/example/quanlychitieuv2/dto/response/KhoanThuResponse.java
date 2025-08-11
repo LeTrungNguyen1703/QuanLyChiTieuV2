@@ -1,9 +1,12 @@
 package com.example.quanlychitieuv2.dto.response;
 
+import com.example.quanlychitieuv2.entity.AuditFields;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -15,21 +18,20 @@ import java.time.LocalDate;
  */
 @AllArgsConstructor
 @Getter
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class KhoanThuResponse implements Serializable {
     private Integer id;
     private String moTa;
     private String tenKhoanThu;
     private BigDecimal ktSotien;
-    @NotNull
+    private AuditFields auditFields;
+    
     private KhoanThuResponse.UserDto user;
-    @NotNull
     private KhoanThuResponse.NgayDto ngay;
-    @NotNull
     private KhoanThuResponse.ViTienDto vt;
-    @NotNull
     private KhoanThuResponse.LoaiKhoanThuDto lkt;
 
-    @NotNull
 
     /**
      * DTO for {@link com.example.quanlychitieuv2.entity.User}
@@ -38,8 +40,6 @@ public class KhoanThuResponse implements Serializable {
     @Getter
     public static class UserDto implements Serializable {
         private final Integer id;
-        @NotNull
-        @Size(max = 255)
         private final String ndTen;
     }
 
@@ -61,7 +61,6 @@ public class KhoanThuResponse implements Serializable {
     public static class ViTienDto implements Serializable {
         private final Integer id;
         private final String tenVi;
-        @NotNull
         private final Double vtSodu;
     }
 
@@ -72,8 +71,6 @@ public class KhoanThuResponse implements Serializable {
     @Getter
     public static class LoaiKhoanThuDto implements Serializable {
         private final Integer id;
-        @NotNull
-        @Size(max = 256)
         private final String lktTen;
     }
 }

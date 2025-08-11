@@ -2,6 +2,7 @@ package com.example.quanlychitieuv2.repository;
 
 import com.example.quanlychitieuv2.entity.KhoanThu;
 import com.example.quanlychitieuv2.entity.ViTien;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +25,8 @@ public interface KhoanThuRepository extends JpaRepository<KhoanThu, Integer> {
             @Param("start") LocalDate start,
             @Param("end") LocalDate end
     );
+
+    List<KhoanThu> findByVtAndNgayNgayDaydu(@NotNull ViTien vt, LocalDate ngay_ngayDaydu);
 
 
 }

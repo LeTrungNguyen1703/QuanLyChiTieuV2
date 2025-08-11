@@ -5,7 +5,12 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-@SuperBuilder
-public class ThongKeTheoNgayResponse extends ThongKeThuChiResponse {
+import java.util.List;
 
+@SuperBuilder
+@Getter
+@Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ThongKeTheoNgayResponse <T> extends ThongKeThuChiResponse {
+    T thongKeTheoThoiGianTrongNgay;
 }

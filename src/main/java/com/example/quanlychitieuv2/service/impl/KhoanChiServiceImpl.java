@@ -128,6 +128,11 @@ public class KhoanChiServiceImpl extends AbstractBaseService<KhoanChiRequest, Kh
     }
 
 
+    @Override
+    public ThongKeTheoNgayResponse<?> thongKeTheoNgay(int viTienId, LocalDate thoiGian) {
+        return null;
+    }
+
     /**
      * Thống kê khoản thu theo tháng cho một ví tiền cụ thể
      * Tìm tất cả khoản thu trong tháng, sau đó tính toán các chỉ số thống kê

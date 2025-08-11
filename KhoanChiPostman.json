@@ -1,3 +1,59 @@
+            },
+            {
+              "key": "thoiGian",
+              "value": "2025"
+            }
+          ]
+        },
+        "description": "Thống kê khoản chi theo năm"
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token for authentication"
+    }
+  ]
+}
 {
   "info": {
     "_postman_id": "e4387a9c-5d18-4c2d-8f65-b67a4e8f52d1",
@@ -175,60 +231,4 @@
             {
               "key": "viTienId",
               "value": "1"
-            },
-            {
-              "key": "thoiGian",
-              "value": "2025"
-            }
-          ]
-        },
-        "description": "Thống kê khoản chi theo năm"
-      },
-      "response": []
-    }
-  ],
-  "auth": {
-    "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{token}}",
-        "type": "string"
-      }
-    ]
-  },
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          ""
-        ]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          ""
-        ]
-      }
-    }
-  ],
-  "variable": [
-    {
-      "key": "base_url",
-      "value": "http://localhost:8080",
-      "type": "string"
-    },
-    {
-      "key": "token",
-      "value": "",
-      "type": "string",
-      "description": "JWT token for authentication"
-    }
-  ]
-}
 

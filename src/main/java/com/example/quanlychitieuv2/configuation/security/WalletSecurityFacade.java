@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class WalletSecurity implements IWalletSecurity {
+public class WalletSecurityFacade implements IWalletSecurity {
 
 
     WalletPermissionService walletPermissionService;

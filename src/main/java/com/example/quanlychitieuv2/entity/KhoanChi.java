@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "khoan_chi")
+@EntityListeners(AuditingEntityListener.class)
 public class KhoanChi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +37,9 @@ public class KhoanChi {
 
     @Column(name = "KC_NgayKetThucLapLai")
     private LocalDate kcNgayketthuclaplai;
+
+    @Embedded
+    private AuditFields auditFields = new AuditFields();
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

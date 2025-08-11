@@ -90,36 +90,31 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
      * Thống kê khoản thu theo ngày cho một danh sách các khoản thu
      * Gom nhóm các khoản thu theo ngày và tính toán các chỉ số thống kê
      *
-     * @param khoanThus Danh sách các khoản thu cần thống kê
+     * @param viTienId ví tiền cần thống kê
+     * @param thoiGian thời gian trong ngày format: yyyy-mm-dd
      * @return Danh sách các báo cáo thống kê theo ngày, đã được sắp xếp theo thời gian
      */
-    public List<ThongKeTheoNgayResponse> thongKeThuByViTienTheoNgay(List<KhoanThu> khoanThus) {
 
-        Map<LocalDate, List<KhoanThu>> groupedByDate = khoanThus.stream()
-                .collect(Collectors.groupingBy(khoanThu -> khoanThu.getNgay().getNgayDaydu()));
+    @Override
+    public ThongKeTheoNgayResponse<?> thongKeTheoNgay(int viTienId, LocalDate thoiGian) {
+        ViTien viTien = findBy.findViTienById(viTienId);
+        List<KhoanThu> khoanThus = khoanThuRepository.findByVtAndNgayNgayDaydu(viTien, thoiGian);
 
-        return groupedByDate.entrySet().stream()
-                .map(entry -> {
-                    LocalDate date = entry.getKey();
-                    List<KhoanThu> listInDay = entry.getValue();
+        DoubleSummaryStatistics statistics = khoanThus.stream()
+                .mapToDouble(khoanThu -> khoanThu.getKtSotien().doubleValue())
+                .summaryStatistics();
 
-                    DoubleSummaryStatistics doubleSummaryStatistics = listInDay.stream()
-                            .mapToDouble(kt -> kt.getKtSotien().doubleValue())
-                            .summaryStatistics();
+        return ThongKeTheoNgayResponse.builder()
+                .thoiGian(thoiGian.toString())
+                .tongSoTien(statistics.getSum())
+                .soTienCaoNhat(statistics.getMax())
+                .soTienThapNhat(statistics.getMin())
+                .soTienTrungBinh(statistics.getAverage())
+                .soGiaoDich((int) statistics.getCount())
+                .thongKeTheoThoiGianTrongNgay(this.mapListKhoanThuToKhoanThuResForThongKeTheoNgay(khoanThus))
+                .loaiGiaoDich(LoaiGiaoDich.THU)
+                .build();
 
-                    return ThongKeTheoNgayResponse.builder()
-                            .tongSoTien(doubleSummaryStatistics.getSum())
-                            .soTienCaoNhat(doubleSummaryStatistics.getMax())
-                            .soTienTrungBinh(doubleSummaryStatistics.getAverage())
-                            .soTienThapNhat(doubleSummaryStatistics.getMin())
-                            .soGiaoDich((int) doubleSummaryStatistics.getCount())
-                            .thoiGian(date.toString())
-                            .loaiGiaoDich(LoaiGiaoDich.THU)
-                            .build();
-
-                })
-                .sorted(Comparator.comparing(ThongKeTheoNgayResponse::getThoiGian)) // Sắp xếp theo ngày tăng dần
-                .collect(Collectors.toList());
     }
 
 
@@ -141,7 +136,7 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
             return null;
         }
 
-        List<ThongKeTheoNgayResponse> thongKeTheoNgays = this.thongKeThuByViTienTheoNgay(khoanThus);
+        List<ThongKeTheoNgayResponse> thongKeTheoNgays = this.xuLyThongKeTheoThang(khoanThus);
 
         DoubleSummaryStatistics statistics = khoanThus.stream()
                 .mapToDouble(khoanThu -> khoanThu.getKtSotien().doubleValue())
@@ -273,5 +268,46 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
             return findBy.findUserByName(authentication.getName());
         }
         return null;
+    }
+
+    private List<ThongKeTheoNgayResponse> xuLyThongKeTheoThang(List<KhoanThu> khoanThus) {
+
+        Map<LocalDate, List<KhoanThu>> groupedByDate = khoanThus.stream()
+                .collect(Collectors.groupingBy(khoanThu -> khoanThu.getNgay().getNgayDaydu()));
+
+        return groupedByDate.entrySet().stream()
+                .map(entry -> {
+                    LocalDate date = entry.getKey();
+                    List<KhoanThu> listInDay = entry.getValue();
+
+                    DoubleSummaryStatistics doubleSummaryStatistics = listInDay.stream()
+                            .mapToDouble(kt -> kt.getKtSotien().doubleValue())
+                            .summaryStatistics();
+
+                    return ThongKeTheoNgayResponse.builder()
+                            .tongSoTien(doubleSummaryStatistics.getSum())
+                            .soTienCaoNhat(doubleSummaryStatistics.getMax())
+                            .soTienTrungBinh(doubleSummaryStatistics.getAverage())
+                            .soTienThapNhat(doubleSummaryStatistics.getMin())
+                            .soGiaoDich((int) doubleSummaryStatistics.getCount())
+                            .thoiGian(date.toString())
+                            .loaiGiaoDich(LoaiGiaoDich.THU)
+                            .build();
+
+                })
+                .sorted(Comparator.comparing(ThongKeTheoNgayResponse::getThoiGian)) // Sắp xếp theo ngày tăng dần
+                .collect(Collectors.toList());
+    }
+
+    private List<KhoanThuResponse> mapListKhoanThuToKhoanThuResForThongKeTheoNgay(List<KhoanThu> khoanThus) {
+        return khoanThus.stream()
+                .map(khoanThu -> KhoanThuResponse.builder()
+                        .id(khoanThu.getId())
+                        .tenKhoanThu(khoanThu.getTenKhoanThu())
+                        .moTa(khoanThu.getMoTa())
+                        .ktSotien(khoanThu.getKtSotien())
+                        .auditFields(khoanThu.getAuditFields())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

@@ -3,6 +3,7 @@ package com.example.quanlychitieuv2.controller.impl;
 import com.example.quanlychitieuv2.controller.AbstractBaseController;
 import com.example.quanlychitieuv2.dto.ApiResponseSuccess;
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoNamResponse;
+import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoNgayResponse;
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoThangResponse;
 import com.example.quanlychitieuv2.dto.request.KhoanThuRequest;
 import com.example.quanlychitieuv2.dto.response.KhoanThuResponse;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
 
@@ -37,9 +39,19 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
     }
 
     @Override
-    @PreAuthorize("@walletSecurity.hasWalletPermission(#khoanThuRequest.vtId, @addTransaction) and @walletSecurity.hasWalletAccess(#khoanThuRequest.vtId)")
+    @PreAuthorize("@walletSecurityFacade.hasWalletPermission(#khoanThuRequest.vtId, @addTransaction) and @walletSecurityFacade.hasWalletAccess(#khoanThuRequest.vtId)")
     public ResponseEntity<ApiResponseSuccess<KhoanThuResponse>> create(KhoanThuRequest khoanThuRequest) {
         return super.create(khoanThuRequest);
+    }
+
+    @GetMapping("/thong-ke-theo-ngay")
+    public ResponseEntity<ApiResponseSuccess<?>> thongKeTheoNgay(
+            @RequestParam Integer viTienId,
+            @RequestParam LocalDate thoiGian
+    ) {
+
+        ThongKeTheoNgayResponse<?> thongKeTheoNgayResponse = khoanThuServiceImpl.thongKeTheoNgay(viTienId, thoiGian);
+        return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoNgayResponse));
     }
 
     @GetMapping("/thong-ke-theo-thang")

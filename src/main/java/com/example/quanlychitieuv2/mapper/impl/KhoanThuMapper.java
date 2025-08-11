@@ -6,6 +6,8 @@ import com.example.quanlychitieuv2.entity.*;
 import com.example.quanlychitieuv2.mapper.BaseMapper;
 import org.mapstruct.*;
 
+import java.util.List;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface KhoanThuMapper extends BaseMapper<KhoanThuRequest, KhoanThuResponse, KhoanThu> {
 

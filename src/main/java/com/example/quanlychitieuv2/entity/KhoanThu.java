@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table(name = "khoan_thu")
+@EntityListeners(AuditingEntityListener.class)
 public class KhoanThu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +23,8 @@ public class KhoanThu {
     @Column(name = "KT_TenKhoanThu", nullable = false)
     private String tenKhoanThu;
 
+    @Embedded
+    private AuditFields auditFields = new AuditFields();
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_Id", nullable = false)

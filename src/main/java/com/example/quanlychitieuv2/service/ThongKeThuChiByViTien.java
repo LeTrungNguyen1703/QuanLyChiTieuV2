@@ -1,13 +1,16 @@
 package com.example.quanlychitieuv2.service;
 
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoNamResponse;
+import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoNgayResponse;
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoThangResponse;
 
+import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
 
 public interface ThongKeThuChiByViTien {
 
+    ThongKeTheoNgayResponse<?> thongKeTheoNgay(int viTienId, LocalDate thoiGian);
 
     ThongKeTheoThangResponse<?> thongKeByViTienTheoThang(int viTienId, YearMonth thoiGian);
 

@@ -41,7 +41,7 @@ public class KhoanChiController extends AbstractBaseController<KhoanChiRequest, 
     }
 
     @Override
-    @PreAuthorize("@walletSecurity.hasWalletPermission(#khoanChiRequest.vtId, @addTransaction) and @walletSecurity.hasWalletAccess(#khoanChiRequest.vtId)")
+    @PreAuthorize("@walletSecurityFacade.hasWalletPermission(#khoanChiRequest.vtId, @addTransaction) and @walletSecurityFacade.hasWalletAccess(#khoanChiRequest.vtId)")
     public ResponseEntity<ApiResponseSuccess<KhoanChiResponse>> create(KhoanChiRequest khoanChiRequest) {
         return super.create(khoanChiRequest);
     }
