@@ -10,6 +10,7 @@ import com.example.quanlychitieuv2.dto.response.KhoanThuResponse;
 import com.example.quanlychitieuv2.entity.KhoanThu;
 import com.example.quanlychitieuv2.service.AbstractBaseService;
 import com.example.quanlychitieuv2.service.impl.KhoanThuServiceImpl;
+import com.example.quanlychitieuv2.service.impl.ThongKeThuServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -33,6 +34,7 @@ import java.time.YearMonth;
 public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, KhoanThuResponse, KhoanThu, Integer> {
 
     KhoanThuServiceImpl khoanThuServiceImpl;
+    ThongKeThuServiceImpl thongKeThuServiceImpl;
     @Override
     protected AbstractBaseService<KhoanThuRequest, KhoanThuResponse, KhoanThu, Integer> abstractService() {
         return khoanThuServiceImpl;
@@ -50,7 +52,7 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
             @RequestParam LocalDate thoiGian
     ) {
 
-        ThongKeTheoNgayResponse<?> thongKeTheoNgayResponse = khoanThuServiceImpl.thongKeTheoNgay(viTienId, thoiGian);
+        ThongKeTheoNgayResponse<?> thongKeTheoNgayResponse = thongKeThuServiceImpl.thongKeTheoNgay(viTienId, thoiGian);
         return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoNgayResponse));
     }
 
@@ -60,7 +62,7 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
             @RequestParam YearMonth thoiGian
             ) {
 
-        ThongKeTheoThangResponse<?> thongKeTheoThangRespons = khoanThuServiceImpl.thongKeByViTienTheoThang(viTienId, thoiGian);
+        ThongKeTheoThangResponse<?> thongKeTheoThangRespons = thongKeThuServiceImpl.thongKeByViTienTheoThang(viTienId, thoiGian);
         return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoThangRespons));
     }
 
@@ -70,7 +72,7 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
             @RequestParam Year thoiGian
     ) {
 
-        ThongKeTheoNamResponse<?> thongKeTheoThangRespons = khoanThuServiceImpl.thongKeByViTienTheoNam(viTienId, thoiGian);
+        ThongKeTheoNamResponse<?> thongKeTheoThangRespons = thongKeThuServiceImpl.thongKeByViTienTheoNam(viTienId, thoiGian);
         return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoThangRespons));
     }
 
