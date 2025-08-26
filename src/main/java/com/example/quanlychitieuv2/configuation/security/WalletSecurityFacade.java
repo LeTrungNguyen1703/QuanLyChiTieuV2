@@ -17,10 +17,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class WalletSecurityFacade implements IWalletSecurity {
-
-
     WalletPermissionService walletPermissionService;
-
     /**
      * Kiểm tra xem người dùng hiện tại có quyền truy cập vào ví tiền hay không
      *

@@ -16,6 +16,7 @@ import com.example.quanlychitieuv2.util.FindBy;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,6 +42,7 @@ public class KhoanThuServiceImpl extends AbstractBaseService<KhoanThuRequest, Kh
     KhoanThuRepository khoanThuRepository;
     KhoanThuMapper khoanThuMapper;
     FindBy findBy;
+    
 
     public KhoanThuServiceImpl(JpaRepository<KhoanThu, Integer> jpaRepository, KhoanThuRepository khoanThuRepository, KhoanThuMapper khoanThuMapper, FindBy findBy) {
         super(jpaRepository);

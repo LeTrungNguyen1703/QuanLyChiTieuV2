@@ -1,19 +1,16 @@
-package com.example.quanlychitieuv2.service.impl;
+package com.example.quanlychitieuv2.service;
 
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoNamResponse;
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoNgayResponse;
 import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoThangResponse;
 import com.example.quanlychitieuv2.entity.*;
 import com.example.quanlychitieuv2.enums.LoaiGiaoDich;
-import com.example.quanlychitieuv2.service.ThongKeThuChiByViTien;
 import com.example.quanlychitieuv2.util.FindBy;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
@@ -25,15 +22,14 @@ import java.util.stream.IntStream;
  * Service xử lý các thao tác liên quan đến Khoản Thu
  * Cung cấp các phương thức CRUD và thống kê dữ liệu khoản thu theo ngày, tháng, năm
  */
-@Service
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public abstract class ThongKeServiceImpl<Entity,Res> implements ThongKeThuChiByViTien {
+public abstract class AbstractThongKeService<Entity,Res> implements ThongKeThuChiByViTien {
     
     FindBy findBy;
     
     @Autowired
-    public ThongKeServiceImpl(FindBy findBy) {
+    public AbstractThongKeService(FindBy findBy) {
         this.findBy = findBy;
     }
     
@@ -133,7 +129,7 @@ public abstract class ThongKeServiceImpl<Entity,Res> implements ThongKeThuChiByV
                 .soTienTrungBinh(doubleSummaryStatistics.getAverage())
                 .soTienThapNhat(doubleSummaryStatistics.getMin())
                 .thongKeTheoThangs(thongKeTheoThangResponses)
-                .loaiGiaoDich(LoaiGiaoDich.THU)
+                .loaiGiaoDich(this.getLoaiGiaoDich())
                 .build();
     }
 
@@ -211,7 +207,7 @@ public abstract class ThongKeServiceImpl<Entity,Res> implements ThongKeThuChiByV
                             .soTienThapNhat(doubleSummaryStatistics.getMin())
                             .soGiaoDich((int) doubleSummaryStatistics.getCount())
                             .thoiGian(date.toString())
-                            .loaiGiaoDich(LoaiGiaoDich.THU)
+                            .loaiGiaoDich(getLoaiGiaoDich())
                             .build();
 
                 })

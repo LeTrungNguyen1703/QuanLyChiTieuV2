@@ -1,31 +1,21 @@
 package com.example.quanlychitieuv2.service.impl;
 
 import com.example.quanlychitieuv2.dto.response.KhoanThuResponse;
-import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoNamResponse;
-import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoNgayResponse;
-import com.example.quanlychitieuv2.dto.response.ThongKeThuChi.ThongKeTheoThangResponse;
 import com.example.quanlychitieuv2.entity.KhoanThu;
-import com.example.quanlychitieuv2.entity.User;
 import com.example.quanlychitieuv2.entity.ViTien;
 import com.example.quanlychitieuv2.enums.LoaiGiaoDich;
 import com.example.quanlychitieuv2.repository.KhoanThuRepository;
-import com.example.quanlychitieuv2.service.ThongKeThuChiByViTien;
+import com.example.quanlychitieuv2.service.AbstractThongKeService;
 import com.example.quanlychitieuv2.util.FindBy;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Year;
-import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Service xử lý các thao tác liên quan đến Khoản Thu
@@ -34,7 +24,7 @@ import java.util.stream.IntStream;
 @Service
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ThongKeThuServiceImpl extends ThongKeServiceImpl<KhoanThu,KhoanThuResponse> {
+public class ThongKeThuServiceImpl extends AbstractThongKeService<KhoanThu,KhoanThuResponse> {
 
     KhoanThuRepository khoanThuRepository;
 

@@ -9,12 +9,11 @@ import com.example.quanlychitieuv2.dto.request.KhoanThuRequest;
 import com.example.quanlychitieuv2.dto.response.KhoanThuResponse;
 import com.example.quanlychitieuv2.entity.KhoanThu;
 import com.example.quanlychitieuv2.service.AbstractBaseService;
-import com.example.quanlychitieuv2.service.impl.KhoanThuServiceImpl;
-import com.example.quanlychitieuv2.service.impl.ThongKeThuServiceImpl;
+import com.example.quanlychitieuv2.service.AbstractThongKeService;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,13 +27,22 @@ import java.time.YearMonth;
 
 @RestController
 @RequestMapping("/khoan-thu")
-@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, KhoanThuResponse, KhoanThu, Integer> {
 
-    KhoanThuServiceImpl khoanThuServiceImpl;
-    ThongKeThuServiceImpl thongKeThuServiceImpl;
+    @Qualifier("khoanThuServiceImpl")
+    AbstractBaseService<KhoanThuRequest, KhoanThuResponse, KhoanThu, Integer> khoanThuServiceImpl;
+    
+    @Qualifier("thongKeThuServiceImpl")
+    AbstractThongKeService<KhoanThu,KhoanThuResponse> thongKeService;
+
+    public KhoanThuController(AbstractBaseService<KhoanThuRequest, KhoanThuResponse, KhoanThu, Integer> khoanThuServiceImpl, AbstractThongKeService<KhoanThu,KhoanThuResponse> thongKeService) {
+        this.khoanThuServiceImpl = khoanThuServiceImpl;
+        this.thongKeService = thongKeService;
+    }
+
+
     @Override
     protected AbstractBaseService<KhoanThuRequest, KhoanThuResponse, KhoanThu, Integer> abstractService() {
         return khoanThuServiceImpl;
@@ -52,7 +60,7 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
             @RequestParam LocalDate thoiGian
     ) {
 
-        ThongKeTheoNgayResponse<?> thongKeTheoNgayResponse = thongKeThuServiceImpl.thongKeTheoNgay(viTienId, thoiGian);
+        ThongKeTheoNgayResponse<?> thongKeTheoNgayResponse = thongKeService.thongKeTheoNgay(viTienId, thoiGian);
         return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoNgayResponse));
     }
 
@@ -62,7 +70,7 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
             @RequestParam YearMonth thoiGian
             ) {
 
-        ThongKeTheoThangResponse<?> thongKeTheoThangRespons = thongKeThuServiceImpl.thongKeByViTienTheoThang(viTienId, thoiGian);
+        ThongKeTheoThangResponse<?> thongKeTheoThangRespons = thongKeService.thongKeByViTienTheoThang(viTienId, thoiGian);
         return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoThangRespons));
     }
 
@@ -72,7 +80,7 @@ public class KhoanThuController extends AbstractBaseController<KhoanThuRequest, 
             @RequestParam Year thoiGian
     ) {
 
-        ThongKeTheoNamResponse<?> thongKeTheoThangRespons = thongKeThuServiceImpl.thongKeByViTienTheoNam(viTienId, thoiGian);
+        ThongKeTheoNamResponse<?> thongKeTheoThangRespons = thongKeService.thongKeByViTienTheoNam(viTienId, thoiGian);
         return ResponseEntity.ok(new ApiResponseSuccess<>(thongKeTheoThangRespons));
     }
 

@@ -5,6 +5,7 @@ import com.example.quanlychitieuv2.entity.KhoanChi;
 import com.example.quanlychitieuv2.entity.ViTien;
 import com.example.quanlychitieuv2.enums.LoaiGiaoDich;
 import com.example.quanlychitieuv2.repository.KhoanChiRepository;
+import com.example.quanlychitieuv2.service.AbstractThongKeService;
 import com.example.quanlychitieuv2.util.FindBy;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Service xử lý các thao tác liên quan đến Khoản Chi
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ThongKeChiServiceImpl extends ThongKeServiceImpl<KhoanChi, KhoanChiResponse> {
+public class ThongKeChiServiceImpl extends AbstractThongKeService<KhoanChi, KhoanChiResponse> {
 
     KhoanChiRepository khoanChiRepository;
 
